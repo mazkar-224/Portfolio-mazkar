@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Azkar | Cloud &amp; DevOps Engineer</title>
+<meta name="description" content="Muhammad Azkar, a Cloud and DevOps engineer from Peshawar, Pakistan. AWS, Docker, Kubernetes, Python and Bash automation, and AI agent workflows.">
+<meta property="og:title" content="Muhammad Azkar | Cloud &amp; DevOps Engineer">
+<meta property="og:description" content="AWS infrastructure, Python and Bash tooling, and AI automation workflows.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#home">Muhammad Azkar</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="menu">Menu</button>
+  <nav id="menu" aria-label="Main">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="hero-text">
+    <p class="status">Open to entry-level DevOps and cloud roles</p>
+    <h1>Muhammad Azkar</h1>
+    <p class="role">Cloud &amp; DevOps engineer</p>
+    <p class="lead">I design AWS infrastructure, write Python and Bash tools around it, and build AI agent workflows on the side. Final-year Computer Science student at the University of Peshawar.</p>
+    <p class="actions">
+      <a class="btn primary" href="assets/Muhammad-Azkar-Resume.pdf" download>Download resume</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </p>
+  </div>
+
+  <figure class="spike" aria-label="Chart of daily cloud cost with a sudden spike crossing an alert threshold">
+    <svg viewBox="0 0 360 170" role="img" aria-hidden="true">
+      <line class="thr" x1="0" y1="78" x2="360" y2="78"/>
+      <text class="lbl" x="4" y="70">alert threshold</text>
+      <path class="line" pathLength="1" d="M0 128 L30 122 L60 130 L90 120 L120 126 L150 118 L180 124 L205 116 L228 38 L262 30 L296 36 L330 28 L360 34"/>
+      <circle class="dot" cx="219" cy="78" r="5"/>
+      <text class="lbl hit" x="150" y="98">alert fires</text>
+    </svg>
+    <figcaption>Cloud Cost Guardian, my final year project. The demo injects a synthetic cost spike and the alert fires within 60 seconds of the breach.</figcaption>
+  </figure>
+</section>
+
+<section id="about" class="block">
+  <h2>About</h2>
+  <div class="body">
+    <p>I'm a final-year Computer Science student in Peshawar with hands-on experience in AWS, Linux, Docker and Kubernetes. I like turning manual work into something repeatable: a multi-tier VPC defined properly, a script that reports usage instead of someone checking the console, an alert that fires before the bill arrives.</p>
+    <p>Alongside the infrastructure work I build AI agents and automations with n8n, Make.com and the major LLM APIs, and I recently finished a Backend AI Engineering internship with FlyRank AI.</p>
+  </div>
+</section>
+
+<section id="skills" class="block">
+  <h2>Skills</h2>
+  <dl class="body skills">
+    <div><dt>AWS</dt><dd>EC2, VPC, S3, IAM, Lambda, ALB, Auto Scaling, NAT Gateway, CloudWatch, Cost Explorer, Boto3, AWS CLI</dd></div>
+    <div><dt>Containers and CI/CD</dt><dd>Docker, Kubernetes, CI/CD fundamentals</dd></div>
+    <div><dt>Languages</dt><dd>Python, Bash</dd></div>
+    <div><dt>Linux and tooling</dt><dd>Ubuntu, Git, GitHub, SSH authentication, branch management</dd></div>
+    <div><dt>Networking</dt><dd>Public and private subnets, Availability Zones, load balancing, IAM security, cloud monitoring</dd></div>
+    <div><dt>Automation and AI</dt><dd>n8n, Make.com, REST APIs, webhooks, LLMs (Claude, OpenAI, Gemini), RAG, Pinecone, prompt engineering</dd></div>
+  </dl>
+</section>
+
+<section id="experience" class="block">
+  <h2>Experience and education</h2>
+  <ol class="body timeline">
+    <li>
+      <p class="when">July 2026 to September 2026</p>
+      <h3>Back-End AI Engineering Intern, FlyRank AI</h3>
+      <p class="where">Chicago, USA (remote)</p>
+      <ul>
+        <li>Completed 10 practical assignments covering API contracts, task design and prompting, retrieval and grounding, and AI evaluation and operations.</li>
+        <li>Built the capstone project "Your 10x Solution", reviewed and accepted by the program's lead track mentor.</li>
+        <li>Worked daily with a distributed team to review AI agent outputs and refine prompts.</li>
+        <li>Completed four verified Anthropic Academy courses alongside the internship.</li>
+      </ul>
+    </li>
+    <li>
+      <p class="when">Expected 2027</p>
+      <h3>BS Computer Science, University of Peshawar</h3>
+      <p class="where">CGPA 3.43 / 4.0</p>
+      <p>Coursework: Operating Systems, Computer Networks, Database Systems, Software Engineering, Big Data, Natural Language Processing, Human-Computer Interaction.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="projects" class="block">
+  <h2>Projects</h2>
+  <div class="body projects">
+    <article>
+      <h3>Cloud Cost Guardian</h3>
+      <p>Real-time AWS cost monitoring that detects abnormal spend with statistical anomaly detection and sends automated alerts when a configurable threshold is breached. Built for my final year project.</p>
+      <p class="tech">Python, CloudWatch, Cost Explorer, IAM, Boto3</p>
+      <p class="links"><a href="https://github.com/mazkar-224/Cloud-cost-guard">View repository</a></p>
+    </article>
+    <article>
+      <h3>AWS multi-tier VPC architecture</h3>
+      <p>Public and private subnets across multiple Availability Zones, an Application Load Balancer in front of EC2 instances, Auto Scaling Groups for availability, and IAM and network segmentation built around least privilege.</p>
+      <p class="tech">VPC, EC2, ALB, Auto Scaling, NAT Gateway, IAM</p>
+    </article>
+    <article>
+      <h3>Static website on AWS EC2</h3>
+      <p>Deployed a static site on Red Hat Linux with the Apache web server, configured security groups and SSH key-pair authentication, and managed the source code on GitHub.</p>
+      <p class="tech">EC2, Apache, Security Groups, SSH, Git</p>
+      <p class="links"><a href="https://github.com/mazkar-224/Deploying-a-Static-Website-on-AWS-EC2">View repository</a></p>
+    </article>
+    <article>
+      <h3>FlyRank backend AI engineering work</h3>
+      <p>Documentation and code from my internship: FastAPI web services and a persistence layer using the Repository Pattern with SQLite.</p>
+      <p class="tech">Python, FastAPI, SQLite</p>
+      <p class="links"><a href="https://github.com/mazkar-224/Flyrank-internship-Backend-AI-Engineering-">View repository</a></p>
+    </article>
+    <article>
+      <h3>AI agents and automation workflows</h3>
+      <p>A voice agent that sends email from a spoken request (ElevenLabs, n8n, Gmail, Google Sheets), a RAG agent that pairs Gemini with a Pinecone vector store, and an email responder that drafts replies automatically.</p>
+      <p class="tech">n8n, Make.com, ElevenLabs, OpenAI, Gemini, Pinecone</p>
+    </article>
+  </div>
+</section>
+
+<section id="certifications" class="block">
+  <h2>Certifications</h2>
+  <ul class="body certs">
+    <li>Google, AI Professional Certificate</li>
+    <li>IBM, Python for Data Science, AI and Development</li>
+    <li>University of Michigan, Programming for Everybody</li>
+    <li>Anthropic, Claude 101</li>
+    <li>Anthropic, Claude Code 101</li>
+    <li>Databricks Academy, Generative AI Fundamentals</li>
+    <li>Databricks Academy, AI Agent Fundamentals</li>
+    <li>LearnKartS, Workflow Automation with n8n</li>
+    <li>University of California, Irvine, Effective Problem-Solving and Decision-Making</li>
+  </ul>
+</section>
+
+<section id="contact" class="block">
+  <h2>Contact</h2>
+  <div class="body">
+    <p>I'm looking for an entry-level DevOps or Cloud Engineer role. Email is the quickest way to reach me.</p>
+    <p class="actions">
+      <a class="btn primary" href="mailto:mazkar0107@gmail.com">mazkar0107@gmail.com</a>
+      <a class="btn" href="https://www.linkedin.com/in/mazkar0107">LinkedIn</a>
+      <a class="btn" href="https://github.com/mazkar-224">GitHub</a>
+    </p>
+    <p class="muted">Peshawar, Pakistan</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>&copy; 2026 Muhammad Azkar</p>
+</footer>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
