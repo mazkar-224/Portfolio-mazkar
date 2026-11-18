@@ -1,0 +1,93 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.title {
+  display: grid;
+  gap: var(--space-3);
+}
+
+// Role first in the DOM, as in the copy ("Back-End AI Engineering Intern, FlyRank AI").
+.role {
+  @include lede;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ash);
+}
+
+.company {
+  font-size: clamp(2.5rem, 9vw, var(--text-2xl));
+  font-weight: 800;
+  line-height: $line-height-tight;
+}
+
+.layout {
+  @include grid;
+  row-gap: var(--space-7);
+}
+
+// Left column: where, when, the repo link. Sticky beside the timeline on desktop.
+.facts {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+
+  @include up("lg") {
+    grid-column: 1 / span 4;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-6));
+  }
+}
+
+.fact {
+  @include mono-value;
+}
+
+.links {
+  margin-top: var(--space-3);
+}
+
+// Vertical timeline: one hairline, a small --signal marker per entry.
+.timeline {
+  position: relative;
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-6);
+
+  @include up("lg") {
+    grid-column: 5 / -1;
+  }
+}
+
+// The hairline: absolutely placed (out of the grid flow), full height without JavaScript.
+// Phase 6 draws it down with scaleY from the top.
+.line {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: $hairline;
+  background: var(--rule);
+  transform-origin: top;
+}
+
+// Padding sits on the entries: the global ol[role="list"] reset outranks a class.
+.entry {
+  position: relative;
+  padding-left: var(--space-6);
+}
+
+// Centred on the 1px line.
+.marker {
+  position: absolute;
+  top: 0.6em;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  background: var(--signal);
+}
+
+.text {
+  @include body-large;
+  @include measure;
+  color: var(--bone);
+}

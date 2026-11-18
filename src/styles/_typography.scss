@@ -1,0 +1,131 @@
+// Typography mixins. Three families, each with one job:
+//   Archivo (variable, wdth axis): display at width 125, body at width 100
+//   Instrument Serif Italic 400: the accent, at most one word per heading
+//   JetBrains Mono: labels, data, the HUD
+// Use in modules with: @use "typography" as *;
+
+@use "tokens" as *;
+@use "mixins" as *;
+
+// ---------------------------------------------------------------------------
+// Display: his name and uppercase section titles
+// ---------------------------------------------------------------------------
+@mixin display-base {
+  font-family: var(--font-display);
+  font-stretch: #{$wdth-display * 1%};
+  font-weight: 800;
+  letter-spacing: $tracking-display;
+  line-height: $line-height-tight;
+  text-transform: uppercase;
+  // Never break a word mid-letter: sizes are chosen so words fit instead.
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+// The name in the hero: "M.Azkar" on a single line at 15vw (measured 5.9em wide).
+@mixin display-hero {
+  @include display-base;
+  font-size: var(--text-hero);
+  line-height: 0.86;
+  white-space: nowrap;
+}
+
+// Section titles: 48px desktop, stepping down on phones.
+@mixin display-section {
+  @include display-base;
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, var(--text-xl));
+  line-height: $line-height-heading;
+}
+
+// Large statements such as the contact "Email me": up to 80px.
+@mixin display-statement {
+  @include display-base;
+  font-size: clamp(2.5rem, 9vw, var(--text-2xl));
+}
+
+// ---------------------------------------------------------------------------
+// Accent: one italic serif word inside a heading
+// ---------------------------------------------------------------------------
+@mixin accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: normal;
+  letter-spacing: 0;
+  // Serif italic sits narrower than expanded Archivo; keep its case as written.
+  text-transform: none;
+}
+
+// ---------------------------------------------------------------------------
+// Body
+// ---------------------------------------------------------------------------
+@mixin body {
+  font-family: var(--font-body);
+  font-stretch: #{$wdth-body * 1%};
+  font-weight: 400;
+  font-size: var(--text-base);
+  line-height: $line-height-body;
+  letter-spacing: 0;
+}
+
+// 18px from tablets up; 17px on phones.
+@mixin body-large {
+  @include body;
+  font-size: var(--text-base);
+
+  @include up("md") {
+    font-size: 1.125rem;
+  }
+}
+
+@mixin lede {
+  @include body;
+  font-weight: 500;
+  font-size: clamp(1.125rem, 2.2vw, var(--text-md));
+  line-height: 1.4;
+}
+
+@mixin measure {
+  max-width: $measure;
+}
+
+// Subsection and card titles in sentence case (not display).
+@mixin title {
+  font-family: var(--font-body);
+  font-stretch: #{$wdth-body * 1%};
+  font-weight: 500;
+  font-size: var(--text-md);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+// ---------------------------------------------------------------------------
+// Mono: labels, data, HUD
+// ---------------------------------------------------------------------------
+// Dim label line: 12px, uppercase, +0.08em, muted colour.
+@mixin mono-label {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: $tracking-mono;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+// Bright value line under a label.
+@mixin mono-value {
+  @include mono-label;
+  font-weight: 500;
+  font-size: 0.8125rem; // 13px
+  color: var(--text);
+}
+
+// Inline code and data in running text, not uppercase.
+@mixin mono-inline {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  letter-spacing: 0;
+  text-transform: none;
+}

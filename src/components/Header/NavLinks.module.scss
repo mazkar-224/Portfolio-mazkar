@@ -1,0 +1,42 @@
+@use "tokens" as *;
+@use "mixins" as *;
+
+// Nav hover: a letter roll (0.4s per letter, 15ms apart, --ease). Each letter's copy
+// sits one line below it (::after); the line box clips both, so at rest only the letter
+// shows and at the end only the copy. Desktop header only, motion allowed only.
+
+.roll {
+  display: inline-flex;
+  overflow: hidden;
+  // One line exactly: the label's own line height.
+  line-height: inherit;
+}
+
+.char {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: attr(data-char);
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  @include motion-ok {
+    transition: transform 0.4s var(--ease);
+    transition-delay: calc(var(--i) * 15ms);
+  }
+}
+
+@include motion-ok {
+  @include fine-pointer {
+    a:hover > .roll .char {
+      transform: translateY(-100%);
+    }
+  }
+
+  a:focus-visible > .roll .char {
+    transform: translateY(-100%);
+  }
+}

@@ -1,0 +1,83 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.root {
+  @include up("lg") {
+    display: none !important;
+  }
+}
+
+.toggle {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-2);
+  margin-inline-end: calc(var(--space-2) * -1);
+
+  @include hover-focus {
+    color: var(--signal);
+  }
+
+  &[aria-expanded="true"] {
+    color: var(--signal);
+  }
+}
+
+.panel {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-7);
+  padding: var(--space-7) var(--page-margin) var(--space-8);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--void);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.link {
+  @include display-base;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  // "CLOUDCOSTGUARD", the longest label, is 12.6em wide: size to the column so it always fits.
+  font-size: min(2.75rem, calc((100vw - 2 * var(--page-margin)) / 13));
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--bone);
+  text-decoration: none;
+
+  @include hover-focus {
+    color: var(--signal);
+  }
+
+  &[aria-current="page"] {
+    color: var(--signal);
+  }
+}
+
+.email {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-5);
+  background: var(--signal);
+  color: var(--void);
+  text-decoration: none;
+
+  @include hover-focus {
+    background: var(--bone);
+  }
+}

@@ -1,0 +1,25 @@
+@use "mixins" as *;
+
+.frame {
+  @include crosshair-frame;
+  background: var(--graphite);
+
+  @include motion-ok {
+    &::after {
+      transition: transform var(--duration-micro) var(--ease);
+    }
+  }
+
+  img,
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+// Positioned so overlays inside (the slit-scan bands) are clipped to the frame too.
+.clip {
+  position: relative;
+  overflow: hidden;
+}

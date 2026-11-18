@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Favicon 1, "spike" (his pick, 18 Nov 2026): a flat --bone line with one --signal spike
+       on --void, the anomaly flag at the heart of CloudCostGuard. No initials, no name. -->
+  <rect width="32" height="32" fill="#0A0B0D"/>
+  <path d="M4 21H11" stroke="#ECECEA" stroke-width="2.5" fill="none"/>
+  <path d="M21 21H28" stroke="#ECECEA" stroke-width="2.5" fill="none"/>
+  <path d="M10 21H11L16 10L21 21H22" stroke="#FF5A1F" stroke-width="2.5" fill="none" stroke-linejoin="miter" stroke-miterlimit="3"/>
+</svg>

@@ -1,0 +1,211 @@
+// Global layer: custom properties, a minimal reset, element defaults, film grain.
+// Component styles live in *.module.scss next to each component.
+
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+:root {
+  @include custom-properties;
+
+  color-scheme: dark;
+}
+
+// ---------------------------------------------------------------------------
+// Minimal reset
+// ---------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  // Lenis takes over smooth scrolling later; native smooth scroll stays off so
+  // the two never fight, and reduced motion is never smooth.
+  scroll-behavior: auto;
+  hanging-punctuation: first last;
+  // Native anchor jumps (no JS, reduced motion) land below the fixed header.
+  scroll-padding-top: var(--header-h);
+}
+
+// Content starts below the fixed header.
+#main {
+  padding-top: var(--header-h);
+}
+
+// Open mobile menu: the page behind it doesn't scroll.
+html.menu-open {
+  overflow: hidden;
+}
+
+body {
+  @include body;
+
+  min-height: 100svh;
+  background-color: var(--surface);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  text-wrap: balance;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+// ---------------------------------------------------------------------------
+// Element defaults
+// ---------------------------------------------------------------------------
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--text-muted);
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition: text-decoration-color var(--duration-micro) var(--ease),
+      color var(--duration-micro) var(--ease);
+  }
+
+  @include hover {
+    text-decoration-color: var(--accent);
+  }
+}
+
+// Any focusable element without its own style still gets the ring.
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+// Sections and <main> take focus programmatically (skip link, nav anchors) so screen
+// readers continue from there; they are not controls, so no ring.
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+::selection {
+  background-color: var(--signal);
+  color: var(--void);
+}
+
+code,
+kbd,
+samp {
+  @include mono-inline;
+}
+
+hr {
+  border: 0;
+  border-top: $hairline solid var(--rule);
+}
+
+// ---------------------------------------------------------------------------
+// Utility classes shared by every page
+// ---------------------------------------------------------------------------
+.visually-hidden {
+  @include visually-hidden;
+}
+
+// "js" is set on <html> by an inline script in the root layout.
+// Pieces that only work with JavaScript hide without it, and the reverse.
+html:not(.js) .js-only {
+  display: none !important;
+}
+
+html.js .no-js-only {
+  display: none !important;
+}
+
+// ---------------------------------------------------------------------------
+// Film grain: a fixed, static overlay at 6% (spec: 5 to 8%).
+// SVG feTurbulence, tiled; never animated, never blocks input.
+// ---------------------------------------------------------------------------
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+// Windows High Contrast / forced colours: drop decoration, keep outlines.
+@media (forced-colors: active) {
+  body::after {
+    display: none;
+  }
+
+  :focus-visible {
+    outline-color: Highlight;
+  }
+}

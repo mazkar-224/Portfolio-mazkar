@@ -1,0 +1,130 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.page {
+  scroll-margin-top: var(--header-h);
+}
+
+.inner {
+  @include container;
+  @include section-space;
+  display: grid;
+  gap: var(--space-8);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.title + .intro {
+  margin-top: var(--space-3);
+}
+
+.label {
+  @include mono-label;
+}
+
+// The page's one h1: the large statement size, as the contact "Email me".
+.title {
+  @include display-statement;
+  max-width: 14ch;
+}
+
+.intro {
+  @include lede;
+  @include measure;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  @include hairline(bottom);
+}
+
+// Phones: no header row; each service is a block with the proof links under it.
+.thead {
+  @include down("md") {
+    @include visually-hidden;
+  }
+}
+
+.th {
+  @include mono-label;
+  text-align: left;
+  padding-block: 0 var(--space-3);
+  padding-right: var(--gutter);
+}
+
+.row {
+  @include hairline(top);
+
+  @include down("md") {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+  }
+}
+
+.service,
+.proof {
+  vertical-align: top;
+
+  @include up("md") {
+    padding-block: var(--space-5);
+  }
+}
+
+.service {
+  @include title;
+  color: var(--text);
+
+  @include up("md") {
+    width: 50%;
+    padding-right: var(--space-7);
+  }
+}
+
+.proof {
+  @include down("md") {
+    display: grid;
+    gap: var(--space-2);
+  }
+}
+
+.proofLabel {
+  @include mono-label;
+
+  @include up("md") {
+    display: none;
+  }
+}
+
+// Links stack one per line in the table cell, each still a 44px target. From 768px the
+// first link is pulled up so its text lines up with the service title beside it.
+.links {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+
+  @include up("md") {
+    margin-top: calc((var(--text-md) * 1.25 - var(--touch-target)) / 2);
+  }
+}
+
+.closing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.closingText {
+  @include lede;
+  @include measure;
+  color: var(--text);
+}

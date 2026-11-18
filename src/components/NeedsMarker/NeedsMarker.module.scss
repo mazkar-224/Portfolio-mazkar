@@ -1,0 +1,11 @@
+@use "tokens" as *;
+@use "typography" as *;
+
+.needs {
+  @include mono-value;
+  justify-self: start;
+  padding: var(--space-2) var(--space-3);
+  border: $hairline dashed var(--accent);
+  color: var(--accent);
+  text-transform: none;
+}

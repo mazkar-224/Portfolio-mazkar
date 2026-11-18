@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Private: never commit
+.claude/
+CLAUDE.md
+
+# UI checker output
+.ui-check/
+
+# Private: never publish. source/ holds his private CV (with his phone number), notes,
+# briefs and the AI headshot that must not appear on the site. .claude/ and CLAUDE.md are
+# local working files for the build assistant.
+/source/
+/.claude/
+/CLAUDE.md

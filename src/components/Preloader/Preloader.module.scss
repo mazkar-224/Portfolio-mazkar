@@ -1,0 +1,85 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+// Hidden unless the boot script chose this visit (html.preload). Without JavaScript, under
+// reduced motion and on repeat visits in the same session, it never shows.
+.preloader {
+  display: none;
+}
+
+:global(html.preload) .preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: grid;
+  place-items: center;
+  background: var(--void);
+
+  // CSS-only exit from 0.9s (gone by 1.2s): the fallback when the animation code is late or fails.
+  // PreloaderExit adds .preload-js to <html> to cancel this and run the GSAP exit instead.
+  animation: preloader-fallback-out 0.3s var(--ease) 0.9s both;
+}
+
+:global(html.preload.preload-js) .preloader {
+  animation: none;
+}
+
+@keyframes preloader-fallback-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-3);
+  width: min(20rem, calc(100vw - 2 * var(--page-margin)));
+}
+
+// ACQUIRING SIGNAL: the dim mono label style, with --bone for presence on void.
+.label {
+  @include mono-label;
+  color: var(--bone);
+  animation: preloader-label-in 0.2s linear both;
+}
+
+@keyframes preloader-label-in {
+  from {
+    opacity: 0;
+  }
+}
+
+// 1px track in --line with the --signal hairline filling it left to right (transform only).
+.track {
+  position: relative;
+  display: block;
+  height: $hairline;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.line {
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  transform-origin: left;
+  animation: preloader-fill 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s both;
+}
+
+@keyframes preloader-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+// Belt and braces: the boot script already skips reduced motion.
+@include reduced-motion {
+  :global(html.preload) .preloader {
+    display: none;
+  }
+}

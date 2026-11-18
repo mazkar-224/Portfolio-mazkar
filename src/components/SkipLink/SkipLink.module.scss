@@ -1,0 +1,24 @@
+@use "mixins" as *;
+@use "typography" as *;
+
+.skip {
+  @include mono-value;
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-skip-link);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-4);
+  background: var(--signal);
+  color: var(--void);
+  text-decoration: none;
+
+  @include visually-hidden-focusable;
+
+  &:focus-visible {
+    outline: 2px solid var(--bone);
+    outline-offset: 2px;
+  }
+}

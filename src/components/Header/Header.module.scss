@@ -1,0 +1,94 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  height: var(--header-h);
+  background: var(--void);
+  border-bottom: $hairline solid var(--line);
+  color: var(--bone);
+}
+
+.inner {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  height: 100%;
+}
+
+.status {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  text-decoration: none;
+
+  @include hover-focus {
+    color: var(--signal);
+  }
+
+  @include motion-ok {
+    transition: color var(--duration-micro) var(--ease);
+  }
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--live);
+  flex: none;
+}
+
+.desktopNav {
+  display: none;
+
+  @include up("lg") {
+    display: block;
+  }
+}
+
+.list {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.link {
+  @include mono-label;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--ash);
+  text-decoration: none;
+
+  @include motion-ok {
+    transition: color var(--duration-micro) var(--ease);
+  }
+
+  @include hover-focus {
+    color: var(--bone);
+  }
+
+  &[aria-current="page"] {
+    color: var(--bone);
+    box-shadow: inset 0 -1px 0 var(--signal);
+  }
+}
+
+.menuFallback {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  text-decoration: none;
+
+  @include up("lg") {
+    display: none !important;
+  }
+}

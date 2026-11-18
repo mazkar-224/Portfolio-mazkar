@@ -1,0 +1,39 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+// Two projects side by side from 1024px, each under its own hairline.
+.list {
+  @include grid;
+  row-gap: var(--space-8);
+}
+
+// Padding and spans sit on the items: the global ul[role="list"] reset outranks a class.
+.item {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  @include hairline(top);
+  padding-top: var(--space-4);
+
+  @include up("lg") {
+    grid-column: span 6;
+  }
+}
+
+.name {
+  @include title;
+}
+
+.text {
+  @include body-large;
+  @include measure;
+  color: var(--text);
+}
+
+.code {
+  @include mono-inline;
+  color: var(--text);
+  white-space: nowrap;
+}

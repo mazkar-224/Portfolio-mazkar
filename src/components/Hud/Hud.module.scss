@@ -1,0 +1,57 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.hud {
+  @include grid;
+  @include hairline(top);
+  row-gap: var(--space-5);
+  padding-block: var(--space-5);
+}
+
+// 2 x 2 on phones, 4 across from tablets.
+.item {
+  grid-column: span 2;
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  min-width: 0;
+
+  @include up("md") {
+    grid-column: span 2;
+  }
+
+  @include up("lg") {
+    grid-column: span 3;
+  }
+}
+
+.label {
+  @include mono-label;
+}
+
+.value {
+  @include mono-value;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-2);
+  row-gap: var(--space-1);
+}
+
+.detail {
+  color: var(--ash);
+}
+
+.clock {
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--live);
+  flex: none;
+}

@@ -1,0 +1,201 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+// Everything here reads the context colours (--text, --text-muted, --rule, --accent),
+// which the Section's paper tone switches to their light-section values.
+
+// "n8n" keeps its lowercase inside the uppercase display title. It stays in Archivo:
+// setting it in the accent serif loads a third font (16 KB) and cost 0.3 s of simulated
+// mobile FCP (measured 18 Nov 2026: 1.2 s with it, 0.9 s without).
+.accent {
+  text-transform: none;
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.lede {
+  @include lede;
+  @include measure;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.note {
+  @include mono-label;
+}
+
+// One column on phones, two from 768px. The n8n canvases are wide (about 2:1),
+// so cards never go narrower than half the page or the nodes become unreadable.
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8) var(--gutter);
+
+  @include up("md") {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+
+  // Keyboard focus on the title link rings the whole card.
+  &:has(.link:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: var(--space-3);
+  }
+}
+
+// On paper the frame sits on the paper, not on a dark panel.
+.frame {
+  background: var(--surface);
+}
+
+// Slit-scan hover (CLAUDE.md motion style): on hover or keyboard focus the screenshot
+// splits into six horizontal bands that start out of line and slide back in about 300ms,
+// ending clean. src/animations/automation.ts creates the bands (desktop only, near the
+// viewport) with the image the card already loaded as their background, so they match it
+// exactly, cost no extra download, and vanish when the animation ends.
+.slits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.slits > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--b) * 100% / 6);
+  height: calc(100% / 6 + 1px); // 1px overlap so no seam shows between bands
+  opacity: 0;
+  background-image: var(--slit-img, none);
+  background-size: 100% 600%;
+  background-position: 0 calc(var(--b) * 20%);
+}
+
+@keyframes slit {
+  from {
+    opacity: 1;
+    transform: translateX(var(--off));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include motion-ok {
+  @include fine-pointer {
+    .card:hover .slits > span {
+      animation: slit 300ms var(--ease) calc(var(--b) * 12ms) both;
+    }
+
+    // Crosshair corners nudge outwards with the card.
+    .card:hover .frame::after {
+      transform: scale(1.012);
+    }
+  }
+
+  .card:has(.link:focus-visible) .slits > span {
+    animation: slit 300ms var(--ease) calc(var(--b) * 12ms) both;
+  }
+}
+
+.body {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.name {
+  @include title;
+  color: var(--text);
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+
+  // Stretch the hit area over the whole card (image included).
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  // The card carries the ring where :has() is supported; this is the fallback.
+  &:focus-visible {
+    outline: none;
+  }
+
+  @supports not selector(:has(*)) {
+    &:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+    }
+  }
+}
+
+.description {
+  @include body;
+  @include measure;
+  color: var(--text);
+}
+
+// The repo folder, in mono: "01-lead-reactivation-engine →".
+.folder {
+  @include mono-label;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-transform: none;
+  overflow-wrap: anywhere;
+}
+
+.arrow {
+  color: var(--accent);
+}
+
+@include motion-ok {
+  .name {
+    transition: color var(--duration-micro) var(--ease);
+  }
+}
+
+@include fine-pointer {
+  .card:hover .name {
+    color: var(--accent);
+  }
+}
+
+.card:has(.link:focus-visible) .name {
+  color: var(--accent);
+}
+
+.cta {
+  @include hairline(top);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-top: var(--space-6);
+}
+
+.ctaLead {
+  @include lede;
+  color: var(--text);
+}
+
+.ctaArrow {
+  margin-left: var(--space-2);
+  color: var(--accent);
+}

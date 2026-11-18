@@ -1,0 +1,111 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  // The only atmosphere allowed: a faint --teal-deep glow behind the name.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto auto;
+    z-index: -1;
+    width: min(70rem, 120vw);
+    aspect-ratio: 1;
+    background: radial-gradient(closest-side, rgb(15 61 69 / 0.55), transparent 70%);
+    pointer-events: none;
+  }
+}
+
+// Phones and tablets: natural flow. From 1024px: fills the first screen below the
+// header with the HUD on the bottom edge (on tall portrait tablets that left a big gap).
+.inner {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-top: clamp(var(--space-7), 8svh, var(--space-9));
+
+  @include up("lg") {
+    gap: var(--space-7);
+    min-height: calc(100svh - var(--header-h));
+  }
+}
+
+.label {
+  @include mono-label;
+}
+
+.name {
+  @include display-hero;
+  // Optical alignment: the M's left stem sits on the grid line.
+  margin-inline-start: -0.04em;
+}
+
+.body {
+  @include grid;
+  row-gap: var(--space-6);
+
+  @include up("lg") {
+    margin-top: auto;
+  }
+}
+
+.intro {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+
+  @include up("lg") {
+    grid-column: 1 / span 7;
+  }
+}
+
+.title {
+  @include lede;
+  color: var(--bone);
+}
+
+.description {
+  @include body-large;
+  @include measure;
+  color: var(--ash);
+  // ash on void: 6.14:1. Raise to bone if this ever sits on a lighter surface.
+}
+
+.side {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--space-5);
+  align-content: end;
+
+  @include up("lg") {
+    grid-column: 8 / -1;
+  }
+}
+
+.availability {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ash);
+  max-width: 44ch;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hud {
+  margin-top: var(--space-4);
+}
+
+// Inline-block so the Phase 7 intro can move it (transforms skip inline boxes).
+.nameText {
+  display: inline-block;
+}

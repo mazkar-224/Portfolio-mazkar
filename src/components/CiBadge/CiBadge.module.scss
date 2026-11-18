@@ -1,0 +1,22 @@
+@use "mixins" as *;
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  align-self: start;
+  justify-self: start;
+  min-height: var(--touch-target);
+  width: max-content;
+
+  @include focus-ring(3px);
+}
+
+// Fixed box: the badge's width changes with its text ("passing", "failing"),
+// so reserve 90x20 and let the SVG scale inside it (no layout shift).
+.badge {
+  display: block;
+  width: 90px;
+  height: 20px;
+  object-fit: contain;
+  object-position: left center;
+}

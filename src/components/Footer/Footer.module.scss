@@ -1,0 +1,70 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.footer {
+  @include hairline(top);
+  background: var(--void);
+  color: var(--bone);
+  padding-block: var(--space-8) var(--space-9);
+}
+
+.inner {
+  @include container;
+  @include grid;
+  row-gap: var(--space-7);
+}
+
+.col {
+  grid-column: span 4;
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  min-width: 0;
+
+  @include up("md") {
+    grid-column: span 4;
+  }
+
+  @include up("lg") {
+    grid-column: span 3;
+  }
+}
+
+.label {
+  @include mono-label;
+}
+
+.value {
+  @include mono-value;
+}
+
+.clock {
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+
+.list {
+  display: grid;
+}
+
+.link {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+
+  @include motion-ok {
+    transition: color var(--duration-micro) var(--ease);
+  }
+
+  @include hover-focus {
+    color: var(--signal);
+  }
+
+  &[aria-current="page"] {
+    color: var(--signal);
+  }
+}

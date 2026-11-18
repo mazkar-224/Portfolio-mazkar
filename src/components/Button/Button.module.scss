@@ -1,0 +1,54 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.button {
+  @include mono-value;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem; // 48px: above the 44px touch minimum
+  padding-inline: var(--space-5);
+  border: $hairline solid transparent;
+  text-decoration: none;
+  white-space: nowrap;
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition:
+      background-color var(--duration-micro) var(--ease),
+      border-color var(--duration-micro) var(--ease),
+      color var(--duration-micro) var(--ease),
+      scale var(--duration-micro) var(--ease);
+
+    // Press: the individual `scale` property composes with the magnetic effect's transform.
+    &:active {
+      scale: 0.98;
+    }
+  }
+}
+
+// --signal with void text: 6.31:1.
+.primary {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--void);
+
+  @include hover-focus {
+    background: var(--bone);
+    border-color: var(--bone);
+    color: var(--void);
+  }
+}
+
+.outlined {
+  background: transparent;
+  border-color: var(--rule);
+  color: var(--text);
+
+  // Context colours: --line and --bone on dark, the paper equivalents in the light section.
+  @include hover-focus {
+    border-color: var(--text);
+  }
+}

@@ -1,0 +1,186 @@
+// Mixins: breakpoints, accessibility helpers, motion guards and layout primitives.
+// Use in modules with: @use "mixins" as *;  (src/styles is a Sass load path, see next.config.ts)
+
+@use "sass:map";
+@use "tokens" as *;
+
+// ---------------------------------------------------------------------------
+// Breakpoints (mobile first)
+// ---------------------------------------------------------------------------
+@mixin up($bp) {
+  @media (min-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  // 0.02px below the breakpoint so up() and down() never both match.
+  @media (max-width: calc(#{map.get($breakpoints, $bp)} - 0.02px)) {
+    @content;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Input and motion guards
+// ---------------------------------------------------------------------------
+// Hover styles only for devices that really hover (no sticky hover on touch).
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// Desktop pointer only: magnetic buttons, cursor effects.
+@mixin fine-pointer {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Wrap any CSS transition or animation in this so reduced motion gets none.
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Accessibility
+// ---------------------------------------------------------------------------
+// The one focus style: a 2px accent ring with an offset, keyboard focus only.
+// On paper sections --focus resolves to --signal-deep (see on-paper).
+@mixin focus-ring($offset: 3px) {
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: $offset;
+  }
+}
+
+// Pair every hover style with the same focus style.
+@mixin hover-focus {
+  @include hover {
+    @content;
+  }
+  &:focus-visible {
+    @content;
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Hidden until focused (skip link).
+@mixin visually-hidden-focusable {
+  &:not(:focus):not(:focus-within) {
+    @include visually-hidden;
+  }
+}
+
+// Minimum 44px hit area without changing the visual size.
+@mixin touch-target {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: max(100%, var(--touch-target));
+    height: max(100%, var(--touch-target));
+    transform: translate(-50%, -50%);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Colour context
+// ---------------------------------------------------------------------------
+// The one light section. Switches the context colours so components adapt.
+// Never --ash on paper (2.84:1): muted text becomes --ash-paper (6.05:1).
+@mixin on-paper {
+  --surface: var(--paper);
+  --text: var(--void);
+  --text-muted: var(--ash-paper);
+  --rule: var(--line-paper);
+  --accent: var(--signal-deep);
+  --focus: var(--signal-deep);
+
+  background-color: var(--surface);
+  color: var(--text);
+}
+
+// ---------------------------------------------------------------------------
+// Layout
+// ---------------------------------------------------------------------------
+@mixin container {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--page-margin));
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+// 4 columns on phones, 8 on tablets, 12 from 1024px.
+@mixin grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter);
+
+  @include up("md") {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  @include up("lg") {
+    grid-template-columns: repeat($grid-columns, minmax(0, 1fr));
+  }
+}
+
+@mixin section-space {
+  padding-block: var(--section-space);
+}
+
+// Hairline rule between sections.
+@mixin hairline($side: top) {
+  border-#{$side}: $hairline solid var(--rule);
+}
+
+// Thin frame with "+" crosshair marks at the four corners, drawn on ::after
+// so the framed content needs no extra markup. Each "+" is centred on the
+// border's own corner pixel. $arm is the half-length of each stroke.
+@mixin crosshair-frame($arm: 4px, $color: var(--text-muted)) {
+  $mark: $arm * 2 + $hairline;
+  $g: linear-gradient($color, $color);
+
+  position: relative;
+  border: $hairline solid var(--rule);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -($arm + $hairline);
+    pointer-events: none;
+    background:
+      $g left 0 top $arm / #{$mark} #{$hairline} no-repeat,
+      $g right 0 top $arm / #{$mark} #{$hairline} no-repeat,
+      $g left 0 bottom $arm / #{$mark} #{$hairline} no-repeat,
+      $g right 0 bottom $arm / #{$mark} #{$hairline} no-repeat,
+      $g left $arm top 0 / #{$hairline} #{$mark} no-repeat,
+      $g right $arm top 0 / #{$hairline} #{$mark} no-repeat,
+      $g left $arm bottom 0 / #{$hairline} #{$mark} no-repeat,
+      $g right $arm bottom 0 / #{$hairline} #{$mark} no-repeat;
+  }
+}
