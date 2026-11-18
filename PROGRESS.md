@@ -311,6 +311,14 @@
   - a video player for the walkthrough: setting the URL would only remove the marker
 - **No new visible strings.**
 
+### After handoff: two preloader fixes (found while showing you the site)
+1. **Hydration race.** In development, the preloader started the hero intro before React had hydrated the hero, and React reported a mismatch. Now the hero starts its own intro after it hydrates, through a second `PreloaderExit` inside the hero. The layout's copy handles pages without a hero. Fresh first visits now log no errors.
+2. **The overlay could get stuck.** The exit waited on the hairline's CSS animation. When a browser pauses animations (a page opened in a hidden or background tab), that wait never ended, and the CSS fallback had already been cancelled, so the page stayed covered. Now:
+   - every wait has a time limit
+   - a hidden tab keeps the CSS-only exit
+   - a safety timer always removes the overlay within 2.5s of a takeover, and jumps the hero intro to its end state
+   - Tested with all CSS animations frozen: the page is uncovered by 3s, on home and on `/services`. Normal visits are unchanged.
+
 ### Side work (18 Nov, your requests): Open Design
 - **Installed:** Open Design 0.27.1, checked against its SHA-256 and notarized by Apple.
 - **Connected:** its MCP server is in Claude Desktop's config, with absolute paths. The original config is backed up next to it.

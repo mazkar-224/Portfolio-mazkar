@@ -1,6 +1,7 @@
 import { Button } from "@/components/Button/Button";
 import { Hud } from "@/components/Hud/Hud";
-import { hero } from "@/content";
+import { PreloaderExit } from "@/components/Preloader/PreloaderExit";
+import { features, hero } from "@/content";
 import styles from "./Hero.module.scss";
 
 // Static hero (Phase 4). The H1 is the LCP element: server-rendered and visible at
@@ -53,6 +54,8 @@ export function Hero() {
         </div>
 
         <Hud items={hero.hud} className={styles.hud} />
+        {/* Starts the preloader exit and hero intro once this hero has hydrated. */}
+        {features.preloader && <PreloaderExit owner="hero" />}
       </div>
     </section>
   );

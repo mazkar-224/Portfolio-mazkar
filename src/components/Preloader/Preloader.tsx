@@ -24,7 +24,7 @@ export function Preloader() {
           <span className={styles.line} data-preloader-line />
         </span>
       </div>
-      <PreloaderExit />
+      <PreloaderExit owner="layout" />
     </div>
   );
 }
