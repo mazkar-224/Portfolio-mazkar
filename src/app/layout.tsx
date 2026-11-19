@@ -38,6 +38,8 @@ export const metadata: Metadata = {
     description: site.description,
   },
   robots: { index: true, follow: true },
+  // Google Search Console ownership check for https://mazkar.vercel.app (URL-prefix property).
+  verification: { google: "larV5RwA4WurBl4i6jZTeii8oAbHFHPHCVNzgToGAx8" },
 };
 
 export const viewport: Viewport = {
