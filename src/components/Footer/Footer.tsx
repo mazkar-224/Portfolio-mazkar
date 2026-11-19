@@ -1,48 +1,44 @@
-import { CiBadge } from "@/components/CiBadge/CiBadge";
-import { LiveClock } from "@/components/LiveClock/LiveClock";
-import { NavLinks } from "@/components/Header/NavLinks";
-import { contact, nav, person, ui } from "@/content";
+import { footerCopy, person, ui } from "@/content";
 import styles from "./Footer.module.scss";
 
-// Repeats the live clock and the CI badge (CLAUDE.md page flow). No name or wordmark.
+// The footer under every page, after the reference site: his name as a serif wordmark, the
+// contact links with arrows, a round back-to-top button, then a thin row of small print.
 export function Footer() {
+  const year = 2026;
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        <div className={styles.col}>
-          <p className={styles.label}>{ui.footer.localTime}</p>
-          <p className={styles.value}>
-            <LiveClock className={styles.clock} /> {person.location.city},{" "}
-            {person.location.timeZoneLabel}
+        <div className={styles.top}>
+          <p className={styles.wordmark}>{person.name}.</p>
+          <nav id="footer-nav" aria-label={ui.footerNavLabel} tabIndex={-1} className={styles.nav}>
+            <ul className={styles.links} role="list">
+              {footerCopy.links.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className={styles.link}
+                    rel={link.href.startsWith("http") ? "noopener" : undefined}
+                    download={link.href.endsWith(".pdf") ? "" : undefined}
+                  >
+                    {link.label} <span aria-hidden="true">↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <a href="#main" className={styles.up}>
+            <span aria-hidden="true">↑</span>
+            <span className="visually-hidden">{footerCopy.backToTop}</span>
+          </a>
+        </div>
+        <div className={styles.bottom}>
+          <p>
+            © {year} {person.name}
           </p>
-        </div>
-
-        <div className={styles.col}>
-          <p className={styles.label}>{ui.footer.ci}</p>
-          <CiBadge />
-        </div>
-
-        <nav id="footer-nav" aria-label={ui.footerNavLabel} className={styles.col} tabIndex={-1}>
-          <p className={styles.label}>{ui.footer.sections}</p>
-          <NavLinks items={nav} listClassName={styles.list} linkClassName={styles.link} />
-        </nav>
-
-        <div className={styles.col}>
-          <p className={styles.label}>{ui.footer.contact}</p>
-          <ul className={styles.list} role="list">
-            <li>
-              <a href={contact.primaryAction.href} className={styles.link}>
-                {contact.email}
-              </a>
-            </li>
-            {contact.links.map((link) => (
-              <li key={link.href}>
-                <a href={link.href} className={styles.link} rel="noopener">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <p className={styles.middle}>{person.jobTitle}</p>
+          <p>
+            {footerCopy.place} <span aria-hidden="true">↗</span> {footerCopy.reach}
+          </p>
         </div>
       </div>
     </footer>

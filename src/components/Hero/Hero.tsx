@@ -1,62 +1,84 @@
-import { Button } from "@/components/Button/Button";
-import { Hud } from "@/components/Hud/Hud";
+import Image from "next/image";
 import { PreloaderExit } from "@/components/Preloader/PreloaderExit";
-import { features, hero } from "@/content";
+import { Scene3D } from "@/components/Scene3D/Scene3D";
+import { features, heroCopy } from "@/content";
 import styles from "./Hero.module.scss";
 
-// Static hero (Phase 4). The H1 is the LCP element: server-rendered and visible at
-// first paint, never hidden waiting for JavaScript. No photo until a real one exists.
+// The hero (redesign 2, after the reference site): pitch black with faint vertical lines, his
+// black-and-white headshot centred at the top with the live engraving shader over it, side
+// labels, a small mono line, the huge serif name, a two-line tagline and two actions.
+// The name and the photo are in the server HTML and paint first.
 export function Hero() {
   return (
     <section className={styles.hero} aria-labelledby="hero-title" data-anim-section="hero">
-      <div className={styles.inner}>
-        <p className={styles.label} data-hero="label">
-          {hero.location}
+      <div className={styles.lines} aria-hidden="true" />
+
+      <Scene3D kind="portrait" src="/images/me/azkar-headshot-bw.png" className={styles.portrait}>
+        <Image
+          src="/images/me/azkar-headshot-bw.png"
+          alt={heroCopy.portraitAlt}
+          width={896}
+          height={743}
+          priority
+          fetchPriority="high"
+          sizes="(min-width: 64rem) 46rem, 94vw"
+          className={styles.photo}
+        />
+        <span className={styles.dots} aria-hidden="true" />
+      </Scene3D>
+
+      <div className={styles.top} data-hero="label">
+        <p className={styles.kicker}>
+          <span className={styles.dot} aria-hidden="true" />
+          {heroCopy.kicker}
         </p>
-
-        <h1 id="hero-title" className={styles.name}>
-          {/* Shown as "M.Azkar" (his decision); screen readers and crawlers get the full name. */}
-          <span aria-hidden="true" className={styles.nameText} data-hero="name">
-            {hero.displayName}
-          </span>
-          <span className="visually-hidden">{hero.name}</span>
-        </h1>
-
-        <div className={styles.body}>
-          <div className={styles.intro}>
-            <p className={styles.title} data-hero="copy">
-              {hero.title}
-            </p>
-            <p className={styles.description} data-hero="copy">
-              {hero.description}
-            </p>
-          </div>
-
-          <div className={styles.side}>
-            <p className={styles.availability} data-hero="actions">
-              {hero.availability}
-            </p>
-            <div className={styles.actions} data-hero="actions">
-              <Button href={hero.primaryAction.href} variant="primary">
-                {hero.primaryAction.label}
-              </Button>
-              {hero.secondaryActions.map((action) => (
-                <Button
-                  key={action.href}
-                  href={action.href}
-                  download={action.href.endsWith(".pdf") ? "" : undefined}
-                >
-                  {action.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <Hud items={hero.hud} className={styles.hud} />
-        {/* Starts the preloader exit and hero intro once this hero has hydrated. */}
-        {features.preloader && <PreloaderExit owner="hero" />}
+        <p className={styles.topRight}>{heroCopy.topRight}</p>
       </div>
+
+      <div className={styles.side} data-hero="copy">
+        <p className={styles.sideLabel}>{heroCopy.sideLabel}</p>
+        <span className={styles.plus} aria-hidden="true">
+          +
+        </span>
+        <ul className={styles.sideList} role="list">
+          {heroCopy.sideList.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className={styles.center}>
+        <h1 id="hero-title" className={styles.name}>
+          <span className={styles.nameText} data-hero="name">
+            {heroCopy.first} <em>{heroCopy.last}</em>
+          </span>
+        </h1>
+        <p className={styles.above} data-hero="copy">
+          {heroCopy.above}
+        </p>
+        <p className={styles.line} data-hero="copy">
+          {heroCopy.line}
+        </p>
+        <div className={styles.actions} data-hero="actions">
+          <a href={heroCopy.primary.href} className={styles.primary} data-magnetic="">
+            {heroCopy.primary.label} <span aria-hidden="true">↓</span>
+          </a>
+          <a href={heroCopy.secondary.href} className={styles.secondary}>
+            {heroCopy.secondary.label} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div className={styles.bottom} data-hero="hud">
+        <p className={styles.bottomItem}>
+          <span className={styles.bar} aria-hidden="true" />
+          {heroCopy.bottom[0]}
+          <span aria-hidden="true">↓</span>
+        </p>
+        <p className={styles.bottomItem}>{heroCopy.bottom[1]}</p>
+      </div>
+
+      {features.preloader && <PreloaderExit owner="hero" />}
     </section>
   );
 }

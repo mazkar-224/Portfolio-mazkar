@@ -11,6 +11,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { MOTION_EVENT, motionSwitchedOff } from "@/animations/media";
 
 const FIRST_INTERACTION = ["scroll", "wheel", "touchstart", "pointerdown", "keydown"] as const;
 
@@ -23,12 +24,25 @@ export function PageMotion() {
     let stop = () => {};
 
     const start = async () => {
-      if (started) return;
+      if (started || motionSwitchedOff()) return;
       started = true;
       removeListeners();
       const { startPageMotion } = await import("@/animations/run");
-      if (!disposed) stop = startPageMotion();
+      if (!disposed && !motionSwitchedOff()) stop = startPageMotion();
     };
+
+    // The "Motion" toggle: off reverts every animation (content shows as server-rendered);
+    // on starts them again.
+    const onMotionChange = () => {
+      if (motionSwitchedOff()) {
+        stop();
+        stop = () => {};
+        started = false;
+      } else {
+        void start();
+      }
+    };
+    window.addEventListener(MOTION_EVENT, onMotionChange);
 
     const removeListeners = () => {
       for (const type of FIRST_INTERACTION) window.removeEventListener(type, start);
@@ -43,6 +57,7 @@ export function PageMotion() {
     return () => {
       disposed = true;
       removeListeners();
+      window.removeEventListener(MOTION_EVENT, onMotionChange);
       stop();
     };
   }, [pathname]);

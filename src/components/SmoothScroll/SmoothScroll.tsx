@@ -1,7 +1,8 @@
 "use client";
 
 // One Lenis instance for the whole site, driven by the GSAP ticker so ScrollTrigger
-// and smooth scrolling share one clock. Off under reduced motion: native scroll only.
+// and smooth scrolling share one clock. Off under reduced motion or when the visitor switches
+// motion off with the site toggle: native scroll only.
 // Native touch scrolling is kept (syncTouch stays false).
 //
 // Lenis and GSAP load after first paint, when the browser is idle, so they stay out of
@@ -10,7 +11,7 @@
 import type Lenis from "lenis";
 import { useEffect } from "react";
 import { whenIdle } from "@/animations/idle";
-import { queries } from "@/animations/media";
+import { MOTION_EVENT, prefersReducedMotion } from "@/animations/media";
 
 let lenis: Lenis | null = null;
 
@@ -41,17 +42,17 @@ export function scrollToTarget(target: HTMLElement) {
 
 export function SmoothScroll() {
   useEffect(() => {
-    const reduce = window.matchMedia(queries.reduceMotion);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let disposed = false;
     let stop = () => {};
 
     const start = async () => {
-      if (lenis || reduce.matches) return;
+      if (lenis || prefersReducedMotion()) return;
       const [{ default: LenisClass }, { gsap, ScrollTrigger }] = await Promise.all([
         import("lenis"),
         import("@/animations/gsap"),
       ]);
-      if (disposed || lenis || reduce.matches) return;
+      if (disposed || lenis || prefersReducedMotion()) return;
 
       const instance = new LenisClass({ autoRaf: false });
       const tick = (time: number) => instance.raf(time * 1000);
@@ -71,7 +72,7 @@ export function SmoothScroll() {
     };
 
     const onPreferenceChange = () => {
-      if (reduce.matches) stop();
+      if (prefersReducedMotion()) stop();
       else void start();
     };
 
@@ -93,12 +94,14 @@ export function SmoothScroll() {
 
     const cancelIdle = whenIdle(() => void start());
     reduce.addEventListener("change", onPreferenceChange);
+    window.addEventListener(MOTION_EVENT, onPreferenceChange);
     document.addEventListener("click", onClick);
 
     return () => {
       disposed = true;
       cancelIdle();
       reduce.removeEventListener("change", onPreferenceChange);
+      window.removeEventListener(MOTION_EVENT, onPreferenceChange);
       document.removeEventListener("click", onClick);
       stop();
     };

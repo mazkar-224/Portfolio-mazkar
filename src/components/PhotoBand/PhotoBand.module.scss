@@ -1,0 +1,101 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.inner {
+  @include container;
+  display: grid;
+  gap: var(--space-5);
+  padding-block: var(--space-6) clamp(4rem, 9vw, 7rem);
+}
+
+.label {
+  @include mono-label;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--bone);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.square {
+  width: 7px;
+  height: 7px;
+  background: var(--signal);
+}
+
+.frame {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  min-height: 34rem;
+  border: 1px solid var(--line);
+}
+
+.clip {
+  position: absolute;
+  inset: 0;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 22%;
+}
+
+.overlay {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  align-content: center;
+  justify-items: start;
+  min-height: 34rem;
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.92), rgb(0 0 0 / 0.55) 45%, rgb(30 30 30 / 0.15) 75%, transparent);
+
+  @include down("md") {
+    align-content: end;
+    background: linear-gradient(0deg, rgb(0 0 0 / 0.95), rgb(0 0 0 / 0.5) 60%, transparent);
+  }
+}
+
+.kicker {
+  @include mono-label;
+}
+
+.title {
+  @include serif-statement;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+
+  em {
+    color: var(--chrome);
+  }
+}
+
+.line {
+  @include body;
+  max-width: 26rem;
+  color: var(--bone);
+  opacity: 0.85;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 3.25rem;
+  padding-inline: var(--space-5);
+  border-radius: 999px;
+  border: 1px solid rgb(232 226 216 / 0.4);
+  background: rgb(13 13 13 / 0.8);
+  color: var(--bone);
+  text-decoration: none;
+
+  @include focus-ring(3px);
+
+  @include hover-focus {
+    border-color: var(--signal);
+  }
+}

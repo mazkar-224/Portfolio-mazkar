@@ -13,8 +13,7 @@
   display: inline-flex;
   align-items: center;
   min-height: var(--touch-target);
-  padding-inline: var(--space-2);
-  margin-inline-end: calc(var(--space-2) * -1);
+  padding-inline: var(--space-4);
 
   @include hover-focus {
     color: var(--signal);

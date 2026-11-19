@@ -3,58 +3,50 @@
 @use "typography" as *;
 
 .footer {
-  @include hairline(top);
   background: var(--void);
   color: var(--bone);
-  padding-block: var(--space-8) var(--space-9);
+  // Extra room at the bottom so the fixed "Motion on" button never covers the small print.
+  padding-block: var(--space-7) calc(var(--space-8) + 3rem);
 }
 
 .inner {
   @include container;
-  @include grid;
-  row-gap: var(--space-7);
-}
-
-.col {
-  grid-column: span 4;
   display: grid;
-  gap: var(--space-3);
-  align-content: start;
-  min-width: 0;
-
-  @include up("md") {
-    grid-column: span 4;
-  }
-
-  @include up("lg") {
-    grid-column: span 3;
-  }
+  gap: var(--space-6);
 }
 
-.label {
-  @include mono-label;
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5) var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line);
 }
 
-.value {
-  @include mono-value;
+.wordmark {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  margin-right: auto;
 }
 
-.clock {
-  color: var(--bone);
-  font-variant-numeric: tabular-nums;
-}
-
-.list {
-  display: grid;
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
 }
 
 .link {
-  @include mono-value;
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
+  gap: var(--space-2);
+  min-height: var(--touch-target);
+  font-size: 0.875rem;
+  color: var(--bone);
   text-decoration: none;
-  overflow-wrap: anywhere;
+
+  @include focus-ring(3px);
 
   @include motion-ok {
     transition: color var(--duration-micro) var(--ease);
@@ -63,8 +55,46 @@
   @include hover-focus {
     color: var(--signal);
   }
+}
 
-  &[aria-current="page"] {
+// Round back-to-top button.
+.up {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid rgb(232 226 216 / 0.3);
+  color: var(--bone);
+  text-decoration: none;
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition: border-color var(--duration-micro) var(--ease), color var(--duration-micro) var(--ease);
+  }
+
+  @include hover-focus {
+    border-color: var(--signal);
     color: var(--signal);
+  }
+}
+
+.bottom {
+  @include mono-label;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+}
+
+.middle {
+  color: var(--signal); // his job title in the site's red, as in the hero
+  @include down("md") {
+    display: none;
   }
 }

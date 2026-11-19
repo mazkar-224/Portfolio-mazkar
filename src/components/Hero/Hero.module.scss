@@ -2,110 +2,280 @@
 @use "mixins" as *;
 @use "typography" as *;
 
+// Full-screen stage, after the reference site. Layers (back to front): faint vertical lines,
+// the portrait, the labels, the name block.
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-
-  // The only atmosphere allowed: a faint --teal-deep glow behind the name.
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -20% -10% auto auto;
-    z-index: -1;
-    width: min(70rem, 120vw);
-    aspect-ratio: 1;
-    background: radial-gradient(closest-side, rgb(15 61 69 / 0.55), transparent 70%);
-    pointer-events: none;
-  }
-}
-
-// Phones and tablets: natural flow. From 1024px: fills the first screen below the
-// header with the HUD on the bottom edge (on tall portrait tablets that left a big gap).
-.inner {
-  @include container;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  padding-top: clamp(var(--space-7), 8svh, var(--space-9));
-
-  @include up("lg") {
-    gap: var(--space-7);
-    min-height: calc(100svh - var(--header-h));
-  }
-}
-
-.label {
-  @include mono-label;
-}
-
-.name {
-  @include display-hero;
-  // Optical alignment: the M's left stem sits on the grid line.
-  margin-inline-start: -0.04em;
-}
-
-.body {
-  @include grid;
-  row-gap: var(--space-6);
-
-  @include up("lg") {
-    margin-top: auto;
-  }
-}
-
-.intro {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-4);
-  align-content: start;
-
-  @include up("lg") {
-    grid-column: 1 / span 7;
-  }
-}
-
-.title {
-  @include lede;
+  min-height: max(44rem, 100svh);
+  background: var(--void);
   color: var(--bone);
 }
 
-.description {
-  @include body-large;
-  @include measure;
-  color: var(--ash);
-  // ash on void: 6.14:1. Raise to bone if this ever sits on a lighter surface.
+// Faint vertical rules across the stage, fading out towards the bottom.
+.lines {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.02) 0 1px,
+    transparent 1px calc(100% / 12)
+  );
+  mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 95%);
 }
 
-.side {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-5);
-  align-content: end;
+// His headshot, centred at the top. The PNG already fades out at the bottom; the mask softens
+// the sides so it melts into the black like the reference.
+.portrait {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--header-h) - 0.5rem);
+  z-index: -1;
+  // Sized by the screen's height too, so the photo always ends above the name block.
+  width: min(94vw, 46rem, calc(54svh * 896 / 743));
+  aspect-ratio: 896 / 743;
+  translate: -50% 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 78%, transparent 100%);
 
   @include up("lg") {
-    grid-column: 8 / -1;
+    top: 4.25rem;
   }
 }
 
-.availability {
-  font-size: var(--text-sm);
-  line-height: 1.5;
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top;
+}
+
+// The dot screen before the shader loads (and when motion or WebGL is off): a fine grid of
+// black between round dots, cut to his outline with the photo itself as the mask.
+.dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, transparent 0 0.8px, rgb(0 0 0 / 0.55) 1.2px);
+  background-size: 2.6px 2.6px;
+  mask-image: url("/images/me/azkar-headshot-bw.png");
+  mask-size: 100% 100%;
+  pointer-events: none;
+}
+
+// The shader draws its own dots once its first frame is on screen.
+.portrait[data-ready] .dots {
+  opacity: 0;
+}
+
+// Small labels under the nav.
+.top {
+  position: absolute;
+  inset: calc(var(--header-h) + 0.75rem) var(--page-margin) auto;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.kicker,
+.topRight {
+  @include mono-label;
+  font-size: 0.6875rem;
   color: var(--ash);
-  max-width: 44ch;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.topRight {
+  @include down("md") {
+    display: none;
+  }
+}
+
+.side {
+  position: absolute;
+  left: var(--page-margin);
+  top: 34%;
+  display: none;
+  gap: var(--space-6);
+
+  @include up("lg") {
+    display: grid;
+  }
+}
+
+.sideLabel {
+  @include mono-label;
+  font-size: 0.6875rem;
+  color: var(--signal);
+}
+
+.plus {
+  font-family: var(--font-mono);
+  color: var(--signal);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.sideList {
+  @include mono-label;
+  font-size: 0.6875rem;
+  display: grid;
+  gap: var(--space-2);
+  color: var(--ash);
+}
+
+// The name block, centred over his shoulders.
+.center {
+  position: absolute;
+  inset: auto var(--page-margin) 6rem;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+
+  @include up("lg") {
+    bottom: 5.5rem;
+  }
+}
+
+.above {
+  @include mono-label;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  color: var(--signal); // his job title in the site's red
+  margin-top: var(--space-4);
+  text-shadow: 0 0 12px var(--void), 0 0 4px var(--void);
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(3.25rem, 10vw, 9.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--bone);
+  text-shadow: 0 8px 40px rgb(0 0 0 / 0.7);
+}
+
+.nameText {
+  display: inline-block;
+
+  em {
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+}
+
+.line {
+  max-width: 26rem;
+  margin-top: var(--space-5);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--bone);
+  opacity: 0.86;
+  text-wrap: balance;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5) var(--space-6);
+  margin-top: var(--space-5);
 }
 
-.hud {
-  margin-top: var(--space-4);
+// Frosted pill with a down arrow (the reference's "Explore my work").
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-7);
+  height: 3.25rem;
+  padding-inline: var(--space-5);
+  border-radius: 999px;
+  border: 1px solid rgb(232 226 216 / 0.3);
+  background: rgb(13 13 13 / 0.74);
+  color: var(--bone);
+  font-size: 0.875rem;
+  text-decoration: none;
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition: border-color var(--duration-micro) var(--ease), background-color var(--duration-micro) var(--ease), scale var(--duration-micro) var(--ease);
+    &:active {
+      scale: 0.98;
+    }
+  }
+
+  @include hover-focus {
+    border-color: var(--signal);
+  }
 }
 
-// Inline-block so the Phase 7 intro can move it (transforms skip inline boxes).
-.nameText {
-  display: inline-block;
+// Underlined text link with a north-east arrow.
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: var(--touch-target);
+  font-size: 0.875rem;
+  color: var(--bone);
+  text-decoration: none;
+  box-shadow: inset 0 -1px 0 rgb(232 226 216 / 0.4);
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition: color var(--duration-micro) var(--ease), box-shadow var(--duration-micro) var(--ease);
+  }
+
+  @include hover-focus {
+    color: var(--signal);
+    box-shadow: inset 0 -1px 0 var(--signal);
+  }
+}
+
+.bottom {
+  position: absolute;
+  inset: auto var(--page-margin) 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-5);
+  // Leave room on the right for the fixed motion toggle.
+  padding-right: 7.5rem;
+}
+
+.bottomItem {
+  @include mono-label;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+
+  &:not(:first-child) {
+    @include down("md") {
+      display: none;
+    }
+  }
+}
+
+.bar {
+  width: 1px;
+  height: 1.75rem;
+  background: var(--signal);
 }

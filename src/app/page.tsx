@@ -1,26 +1,29 @@
-import { Automation } from "@/components/Automation/Automation";
-import { AwsWork } from "@/components/AwsWork/AwsWork";
-import { CloudCostGuard } from "@/components/CloudCostGuard/CloudCostGuard";
-import { Contact } from "@/components/Contact/Contact";
-import { Education } from "@/components/Education/Education";
-import { Experience } from "@/components/Experience/Experience";
+import { About } from "@/components/About/About";
+import { Approach } from "@/components/Approach/Approach";
+import { Close } from "@/components/Close/Close";
+import { ExperienceV2 } from "@/components/ExperienceV2/ExperienceV2";
 import { Hero } from "@/components/Hero/Hero";
-import { Skills } from "@/components/Skills/Skills";
+import { Journey } from "@/components/Journey/Journey";
+import { PhotoBand } from "@/components/PhotoBand/PhotoBand";
+import { Stats } from "@/components/Stats/Stats";
 import { StructuredData } from "@/components/StructuredData/StructuredData";
+import { Work } from "@/components/Work/Work";
 
-// Home, in the brief's section order.
+// The redesigned home page (18 Nov 2026): the reference site's structure, in pitch black and red,
+// with his photos and the chrome 3D objects from his reference images.
 export default function Home() {
   return (
     <>
       <StructuredData />
       <Hero />
-      <CloudCostGuard />
-      <Experience />
-      <Automation />
-      <AwsWork />
-      <Skills />
-      <Education />
-      <Contact />
+      <Stats />
+      <About />
+      <Work />
+      <Approach />
+      <ExperienceV2 />
+      <PhotoBand />
+      <Journey />
+      <Close />
     </>
   );
 }

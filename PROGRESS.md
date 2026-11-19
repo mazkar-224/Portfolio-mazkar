@@ -1,8 +1,84 @@
 # Portfolio build: progress report
 
-**As of 18 Nov 2026.** All 11 phases are built. Phases 0 to 10 are approved, and Phase 11 (the handoff README) is waiting for your review.
+**As of 19 Nov 2026: final design approved and pushed.** Next step: deploy on Vercel's free Hobby plan by importing the GitHub repo (no settings to change).
 
-**Next step, your side:** put the project on GitHub and deploy it to Vercel; `README.md` has the steps. After that, the open items below: a real photo, the walkthrough video, and optionally a custom domain.
+## Final design (redesign 2, 19 Nov 2026)
+
+After the reference site https://sarthak-sharma-portfolio-six.vercel.app/, in **pure black (#000) and red (#ff3d2e)**:
+- **Hero:** your headshot, head and shoulders in neutral black and white, lit evenly on both sides, drawn as a fine dot screen by a WebGL shader (ripples under the mouse). Big serif "Muhammad *Azkar*", your job title in red under it, two-line tagline, "Explore my work" and "Start a conversation". No HUD cards, clock or CI badge.
+- **Sections:** stats, About (red particle field that animates all the time and reacts to the mouse), Work, How I work (skills, with Kubernetes under "Familiar"), Experience, the black-and-white field photo band, Journey, Contact ("Something useful starts with *a hello.*"), and a footer with your links and a back-to-top button.
+- **Motion on/off** button bottom-right; off stops smooth scroll, animations and 3D.
+- Film grain removed so the black stays pitch black.
+- Only two photos are used: `public/images/me/azkar-headshot-bw.png` and `azkar-field-band-bw.jpg`. Draft edits stay local, uncommitted.
+- `.vercelignore` keeps `source/` (private CV with your phone number) out of any Vercel upload.
+
+The sections below are history from the first redesign (purple), kept for reference.
+
+---
+
+
+**As of 18 Nov 2026.** All 11 original phases were built, approved and pushed. You then asked for a **redesign**:
+- the look of https://sarthak-sharma-portfolio-six.vercel.app/, in **black and purple**
+- your own photos
+- the 3D chrome objects and effects from your 9 reference images
+
+You also set aside the old `CLAUDE.md` rules. The redesign is built and running locally, and waiting for your review. It is **not committed or pushed yet**.
+
+## The redesign (18 Nov 2026)
+
+**Your photos:**
+- The 5 originals are saved untouched in `source/photos/` (kept out of git).
+- Backgrounds were removed on your Mac with Apple's built-in subject lifting (nothing uploaded).
+- Each was graded into a black-chrome look with a violet tint.
+- The hero uses photo 2 (blue suit). A full-width band uses photo 4 (the field). All edited files are in `public/images/me/`.
+
+**What's on the page, top to bottom:**
+1. **Floating frosted pill nav:** your name in serif, the links, and "Let's talk".
+2. **Hero:**
+   - "AZKAR" huge in Anton behind you, a violet glow ring, and your chrome portrait with a **live WebGL shader**: engraving lines at rest, liquid violet chrome near the mouse, a violet rim light
+   - your name in Instrument Serif with an italic "Azkar"
+   - side labels, and frosted cards with live data (open to work, Islamabad time, CloudCostGuard's live CI badge)
+   - a floating **3D chrome star** with an orbit ring
+3. **Stats strip,** real numbers only: 100 tests, 82% coverage, 6 public agents, 4 containers.
+4. **About:** a **3D particle field** (about 5,000 points) that morphs between a wave grid, a vortex and a sphere through three tabs (Cloud / Automate / Build), beside your story.
+5. **Work:**
+   - a **3D chrome chess queen**, turned on a lathe in code
+   - CloudCostGuard featured in a browser-window frame, with its metadata, live CI and links
+   - two n8n agent cards
+   - a list of more projects that turns violet on hover
+6. **How I work:** four numbered steps, and an accordion of your real skill groups.
+7. **Experience:** the FlyRank AI internship as a timeline.
+8. **A full-width photo** of you in the field: "Built to run. *Made to last.*"
+9. **Journey:** your real story with dates, plus education and certification cards.
+10. **Close:** "LET'S BUILD SOMETHING RELIABLE." in two-tone Anton, a wireframe globe with a star, and Email me.
+
+**New design system:**
+- **Colours:** black #07050C, violet #A78BFA (stronger #8B5CF6, deep #4C1D95), lavender-white text #EFEAF7.
+- **Fonts:** Instrument Serif, DM Sans, Anton and JetBrains Mono.
+- **Share image:** now purple, with your portrait.
+
+**How the 3D loads:**
+- Every 3D piece loads only after the visitor's first interaction (a mouse move counts), then when the browser is idle.
+- Each scene runs only near the screen and is removed when far away.
+- Under reduced motion or without WebGL, the plain graded photo and static glows show instead.
+- `features.webglEffect` in `src/content/site.ts` turns all 3D off.
+
+**Measured (production build, this Mac; the CPU benchmark had dropped to about 1,250 against about 2,100 earlier):**
+
+| | Perf | A11y | BP | SEO | FCP | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|
+| Desktop | 99 | 100 | 100 | 100 | 0.3s | 0.7s | 10ms | 0.044 |
+| Mobile (simulated), 3 runs | 71–77 | 100 | 100 | 100 | 1.2s | 3.3–4.0s | 600–650ms | 0.007 |
+
+**Notes on the numbers:**
+- Mobile is slower than the first design (about 95): the photo is now the largest element painted, and the new visuals are heavier.
+- **Fixes made along the way:**
+  - 3D at page load raised blocking time to 1–10s, so it now waits for interaction
+  - frosted blur on cards was costly, so it's now on the nav only
+  - the giant word shifted when its font loaded, so its box size is now fixed
+- First-load JavaScript is 185 KB. Three.js is never in it.
+
+**Not done yet:** a chess knight (needs a 3D model file); a photo-optimisation pass for mobile speed.
 
 ---
 

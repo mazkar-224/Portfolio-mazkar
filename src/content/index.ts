@@ -12,6 +12,7 @@ export { education } from "./education";
 export { contact } from "./contact";
 export { services, type Service } from "./services";
 export { ui } from "./ui";
+export * from "./home";
 
 /** Home page section order, from the brief's <landing_page>. */
 export const homeSectionOrder = [

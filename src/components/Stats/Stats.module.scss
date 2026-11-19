@@ -1,0 +1,53 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.stats {
+  border-block: 1px solid var(--line);
+  background: var(--void);
+}
+
+// The container sits on a wrapper: the global ul[role="list"] reset would wipe its padding.
+.wrap {
+  @include container;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @include up("lg") {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.item {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-6) var(--space-5) var(--space-6) 0;
+
+  & + & {
+    @include up("lg") {
+      padding-left: var(--space-6);
+      border-left: 1px solid var(--line);
+    }
+  }
+}
+
+.value {
+  @include serif-statement;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+.suffix {
+  color: var(--signal);
+}
+
+.label {
+  @include body;
+  font-size: 0.875rem;
+  color: var(--ash);
+  max-width: 17rem;
+}

@@ -1,0 +1,150 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.grid {
+  display: grid;
+  gap: var(--space-8);
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+  }
+}
+
+.panel {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fieldHead {
+  @include mono-label;
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.field {
+  aspect-ratio: 1 / 0.86;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: radial-gradient(60% 60% at 50% 50%, rgb(255 61 46 / 0.05), transparent 70%);
+}
+
+.fieldGlow {
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 61 46 / 0.08), transparent);
+}
+
+.caption {
+  @include mono-label;
+  text-align: center;
+  letter-spacing: 0.3em;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 3.25rem;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: rgb(13 13 13 / 0.6);
+  color: var(--bone);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+
+  @include focus-ring(3px);
+
+  @include motion-ok {
+    transition: background-color var(--duration-micro) var(--ease), color var(--duration-micro) var(--ease), border-color var(--duration-micro) var(--ease);
+  }
+
+  @include hover-focus {
+    border-color: rgb(232 226 216 / 0.5);
+  }
+
+  &[aria-pressed="true"] {
+    background: linear-gradient(180deg, #efe9de, #e2d9c8);
+    border-color: transparent;
+    color: var(--void);
+  }
+}
+
+.tabBody {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.tabTitle {
+  @include serif-statement;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+.tabText {
+  @include body;
+  color: var(--ash);
+  max-width: 34rem;
+}
+
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-self: start;
+  min-height: var(--touch-target);
+  color: var(--bone);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  box-shadow: inset 0 -1px 0 rgb(232 226 216 / 0.5);
+
+  @include focus-ring(3px);
+
+  @include hover-focus {
+    color: var(--signal);
+  }
+}
+
+.text {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+
+  @include up("lg") {
+    padding-top: 4rem;
+  }
+}
+
+.lede {
+  @include body;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  color: var(--bone);
+}
+
+.body {
+  @include body;
+  font-size: 1.0625rem;
+  color: var(--ash);
+}
+
+.traits {
+  @include mono-label;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}

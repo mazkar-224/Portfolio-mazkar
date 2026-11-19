@@ -105,8 +105,8 @@ export const nav: Link[] = [
  * On/off switches for the two optional effects. Set either to false, save, and rebuild.
  * - preloader: the first-visit "ACQUIRING SIGNAL" overlay and the hero intro behind it.
  *   Off: the hero simply shows as painted on every visit.
- * - webglEffect: the CloudCostGuard screenshot resolving out of ASCII noise (desktop only).
- *   Off: the plain screenshot, with the normal frame reveal.
+ * - webglEffect: all the 3D: the hero portrait's engraving/chrome shader, the chrome star and
+ *   chess queen, and the About particle field. Off: the plain graded photo and static glows.
  */
 export const features = {
   preloader: true,

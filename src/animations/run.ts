@@ -8,8 +8,6 @@
 // tween is scoped, and revert() undoes all of them (route change, unmount, or the
 // reduced-motion setting switching on).
 
-import { automationSection } from "./automation";
-import { cloudCostGuardSection } from "./cloudcostguard";
 import { experienceSection } from "./experience";
 import { gsap } from "./gsap";
 import { magnetic } from "./magnetic";
@@ -26,9 +24,7 @@ type Factory = (scope: HTMLElement) => void;
 const noop: Factory = () => {};
 const factories: Record<string, Factory> = {
   hero: noop,
-  cloudcostguard: cloudCostGuardSection,
   experience: experienceSection,
-  automation: automationSection,
 };
 
 /** Let the browser handle input and paint between sections (no long tasks). */

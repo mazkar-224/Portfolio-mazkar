@@ -1,6 +1,7 @@
 // Section 6, skills, in the four evidence groups. Copy: landing-page-copy.md "6. Skills".
 // No bars, percentages, ratings or logos. Never listed (hard rule 4): LangChain, LangGraph,
-// FAISS, Redis, Node.js, Express, Celery. Kubernetes only as learning (hard rule 5).
+// FAISS, Redis, Node.js, Express, Celery. Kubernetes moved from "Learning now" to "Familiar" on
+// 19 Nov 2026 at his request (he says he knows it; no shipped project uses it yet).
 // "AWS VPC, load balancers and auto scaling" stays off the site (brief 4.3).
 
 export type SkillGroup = {
@@ -72,12 +73,7 @@ export const skills = {
     {
       id: "familiar",
       label: "Familiar",
-      items: ["Make.com", "S3 and Lambda (through the AWS CLI)"],
-    },
-    {
-      id: "learning",
-      label: "Learning now",
-      items: ["Kubernetes"],
+      items: ["Make.com", "S3 and Lambda (through the AWS CLI)", "Kubernetes"],
     },
   ] satisfies SkillGroup[],
 } as const;

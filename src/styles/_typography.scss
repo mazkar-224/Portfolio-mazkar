@@ -12,9 +12,8 @@
 // ---------------------------------------------------------------------------
 @mixin display-base {
   font-family: var(--font-display);
-  font-stretch: #{$wdth-display * 1%};
-  font-weight: 800;
-  letter-spacing: $tracking-display;
+  font-weight: 400; // Anton has one weight; never let the browser fake bold
+  letter-spacing: 0.005em;
   line-height: $line-height-tight;
   text-transform: uppercase;
   // Never break a word mid-letter: sizes are chosen so words fit instead.
@@ -33,7 +32,6 @@
 // Section titles: 48px desktop, stepping down on phones.
 @mixin display-section {
   @include display-base;
-  font-weight: 700;
   font-size: clamp(2rem, 6vw, var(--text-xl));
   line-height: $line-height-heading;
 }
@@ -62,7 +60,6 @@
 // ---------------------------------------------------------------------------
 @mixin body {
   font-family: var(--font-body);
-  font-stretch: #{$wdth-body * 1%};
   font-weight: 400;
   font-size: var(--text-base);
   line-height: $line-height-body;
@@ -93,7 +90,6 @@
 // Subsection and card titles in sentence case (not display).
 @mixin title {
   font-family: var(--font-body);
-  font-stretch: #{$wdth-body * 1%};
   font-weight: 500;
   font-size: var(--text-md);
   line-height: 1.25;
@@ -128,4 +124,20 @@
   font-size: 0.9em;
   letter-spacing: 0;
   text-transform: none;
+}
+
+// ---------------------------------------------------------------------------
+// Serif statements (the reference's voice): Instrument Serif, tight, with italic accents
+// ---------------------------------------------------------------------------
+@mixin serif-statement {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  text-transform: none;
+
+  em,
+  i {
+    font-style: italic;
+  }
 }

@@ -1,0 +1,166 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.grid {
+  display: grid;
+  gap: var(--space-8);
+
+  @include up("lg") {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+}
+
+.left {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+
+.sub {
+  @include body;
+  color: var(--ash);
+}
+
+.kicker {
+  @include mono-label;
+  color: var(--signal);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.steps {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 1.25rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 1px;
+    background: linear-gradient(var(--signal), var(--line));
+  }
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.stepNum {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid rgb(232 226 216 / 0.45);
+  background: var(--void);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--signal);
+}
+
+.stepText {
+  @include serif-statement;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.accordion {
+  display: grid;
+}
+
+.item {
+  border-top: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2) var(--space-5);
+  align-items: center;
+  padding-block: var(--space-5);
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  @include focus-ring(4px);
+}
+
+.summaryTag {
+  @include mono-label;
+  font-size: 0.6875rem;
+  grid-column: 1 / -1;
+}
+
+.summaryTitle {
+  @include serif-statement;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+// A "+" that turns into "−" when open.
+.icon {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--bone);
+  }
+
+  &::after {
+    transform: rotate(90deg);
+
+    @include motion-ok {
+      transition: transform var(--duration-micro) var(--ease);
+    }
+  }
+}
+
+.item[open] .icon::after {
+  transform: rotate(0);
+}
+
+.item[open] .summaryTitle {
+  color: var(--chrome);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-bottom: var(--space-6);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--signal);
+  margin-left: 1px;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(13 13 13 / 0.6);
+  color: var(--bone);
+}

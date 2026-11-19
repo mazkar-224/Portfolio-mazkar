@@ -1,0 +1,48 @@
+@use "tokens" as *;
+@use "mixins" as *;
+
+// Small frosted square-ish button, bottom-right (the reference's "MOTION ON").
+.toggle {
+  position: fixed;
+  right: var(--page-margin);
+  bottom: 1rem;
+  z-index: var(--z-header);
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: 2.75rem;
+  padding-inline: var(--space-4);
+  border-radius: 4px;
+  border: 1px solid rgb(232 226 216 / 0.3);
+  background: rgb(13 13 13 / 0.78);
+  color: var(--ash);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+
+  @include focus-ring(3px);
+
+  @include hover-focus {
+    color: var(--bone);
+    border-color: var(--signal);
+  }
+
+  // JS only (it does nothing without it), and not when the system already reduces motion.
+  :global(html.js) & {
+    display: inline-flex;
+  }
+
+  @include reduced-motion {
+    :global(html.js) & {
+      display: none;
+    }
+  }
+}
+
+.icon {
+  font-size: 0.5rem;
+  color: var(--signal);
+}

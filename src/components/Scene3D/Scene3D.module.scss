@@ -1,0 +1,25 @@
+@use "mixins" as *;
+
+.box {
+  position: relative;
+}
+
+// The WebGL layer sits exactly over the fallback and fades in once its first frame is drawn.
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+
+  @include motion-ok {
+    transition: opacity 0.8s var(--ease);
+  }
+}
+
+.box[data-ready] .layer {
+  opacity: 1;
+}
+
+// Particles have no "ready" signal of their own and no fallback to cover: show at once.
+.box:not(:has(img)) .layer {
+  opacity: 1;
+}

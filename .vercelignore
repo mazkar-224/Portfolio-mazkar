@@ -1,0 +1,10 @@
+# Never uploaded to Vercel. source/ holds the private CV (with his phone number), notes and
+# briefs; .claude/ and CLAUDE.md are local working files; the rest is local build output.
+/source
+/.claude
+/CLAUDE.md
+/redesign-preview
+/.ui-check
+/node_modules
+/.next
+.env*

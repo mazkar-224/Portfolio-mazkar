@@ -1,5 +1,6 @@
 // Design tokens: the single source for colour, type, space, motion and layering.
-// Values come from source/theme-direction.md. Contrast ratios were measured on 18 Nov 2026.
+// Redesign 2, 18 Nov 2026: pitch black and red (his choice), after the reference site.
+// Token names are kept from the first build so every component retunes at once.
 // Components read the CSS custom properties (var(--...)); SCSS maps exist for loops and mixins.
 
 @use "sass:map";
@@ -8,26 +9,30 @@
 // Colour
 // ---------------------------------------------------------------------------
 $colors: (
-  "void": #0a0b0d,        // page background
-  "graphite": #131519,    // cards, panels
-  "line": #262a30,        // hairlines, frame borders (decorative)
-  "bone": #ececea,        // main text: 16.64:1 on void, 15.45:1 on graphite
-  "ash": #8b9099,         // labels and secondary text on dark: 6.14:1 on void, 5.70:1 on graphite
-  "signal": #ff5a1f,      // the only accent: 6.31:1 on void; use void text on it (6.31:1)
-  "paper": #f2f1ee,       // the one light section (AI automation): void text 17.43:1
-  "signal-deep": #c2410c, // accent on paper only: 4.58:1
-  "ash-paper": #565b63,   // labels on paper: 6.05:1 (ash on paper fails at 2.84:1)
-  "line-paper": #d6d4ce,  // hairlines on paper (decorative)
-  "teal-deep": #0f3d45,   // atmosphere only (glow, duotone). Never text.
-  "live": #3dd68c,        // only the open-to-work status dot: 10.5:1 on void
+  "void": #000000,          // page background: pure pitch black (his reference portrait)
+  "graphite": #0a0a0a,      // cards, panels
+  "line": #232323,          // hairlines, frame borders (decorative)
+  "bone": #f1eee8,          // main text (warm white): about 18:1 on void
+  "ash": #a39e96,           // labels and secondary text: about 7.6:1 on void
+  "signal": #ff3d2e,        // the one accent (red): about 5.9:1 on void; small marks only
+  "violet": #ff3d2e,        // (old name) same red, for the few glows that remain
+  "violet-deep": #3a0905,   // deep red atmosphere, barely visible. Never text.
+  "chrome": #f1eee8,        // italic highlight tone: same as text, like the reference
+  "paper": #f2f1ee,         // (unused since the redesign)
+  "signal-deep": #c2190c,   // darker red for hover fills
+  "ash-paper": #565b63,     // (unused since the redesign)
+  "line-paper": #d6d4ce,    // (unused since the redesign)
+  "teal-deep": #140403,     // atmosphere glow, near-black red
+  "live": #ff3d2e,          // the open-to-work dot, red like every other marker
 );
 
 // ---------------------------------------------------------------------------
 // Typography
 // ---------------------------------------------------------------------------
 // Font stacks resolve to the next/font CSS variables set on <html> in app/layout.tsx.
-$font-display: var(--font-archivo), "Arial Narrow", system-ui, sans-serif;
-$font-body: var(--font-archivo), system-ui, sans-serif;
+$font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+$font-body: var(--font-dm-sans), system-ui, sans-serif;
+$font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
 $font-accent: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
 $font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
@@ -84,7 +89,7 @@ $section-space: clamp(5rem, 12vw, 10rem);
 $radius: 0; // square everywhere: hairlines and frames, no rounded cards
 $hairline: 1px;
 $touch-target: 2.75rem; // 44px
-$header-h: 3.5rem; // 56px fixed header
+$header-h: 5.5rem; // 88px: the floating pill nav (64px) plus its 12px top and bottom gaps
 
 $breakpoints: (
   "sm": 30rem,   // 480
@@ -130,6 +135,7 @@ $z: (
   --font-body: #{$font-body};
   --font-accent: #{$font-accent};
   --font-mono: #{$font-mono};
+  --font-serif: #{$font-serif};
 
   @each $name, $value in $type-scale {
     --text-#{$name}: #{$value};

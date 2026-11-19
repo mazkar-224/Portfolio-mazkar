@@ -4,6 +4,7 @@
 
 .page {
   scroll-margin-top: var(--header-h);
+  padding-top: var(--header-h); // the nav floats over the page
 }
 
 .inner {

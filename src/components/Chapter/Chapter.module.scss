@@ -1,0 +1,75 @@
+@use "tokens" as *;
+@use "mixins" as *;
+@use "typography" as *;
+
+.chapter {
+  position: relative;
+  scroll-margin-top: var(--header-h);
+}
+
+.inner {
+  @include container;
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  padding-block: clamp(5rem, 11vw, 9rem);
+}
+
+.rule {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.label {
+  @include mono-label;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--bone);
+}
+
+.square {
+  width: 7px;
+  height: 7px;
+  background: var(--signal);
+}
+
+.aside {
+  @include mono-label;
+
+  @include down("md") {
+    display: none;
+  }
+}
+
+.head {
+  display: grid;
+  gap: var(--space-6);
+  align-items: end;
+
+  @include up("lg") {
+    grid-template-columns: 1fr minmax(16rem, 24rem);
+  }
+}
+
+.title {
+  @include serif-statement;
+  font-size: clamp(2.75rem, 6.6vw, 6rem);
+  display: grid;
+
+  em {
+    color: var(--chrome);
+  }
+}
+
+.line {
+  display: block;
+}
+
+.side {
+  @include body;
+  color: var(--ash);
+  max-width: 24rem;
+}

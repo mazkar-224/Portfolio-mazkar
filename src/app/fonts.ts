@@ -1,37 +1,42 @@
-import { Instrument_Serif } from "next/font/google";
+import { Anton, DM_Sans, Instrument_Serif } from "next/font/google";
 import localFont from "next/font/local";
 
-// Archivo and JetBrains Mono are self-hosted, trimmed to the axes and characters the site
-// uses (see src/fonts/README.md): 88 KB -> 53 KB and 40 KB -> 13 KB. Only Archivo is
-// preloaded, because it renders the hero heading and the hero text (the LCP elements).
+// The redesign's type system (18 Nov 2026, after the reference review):
+// - Instrument Serif (roman + italic): the name and section statements, with italic accent words
+// - DM Sans: body text and UI
+// - Anton: huge condensed uppercase words (the giant word behind the portrait, the contact close)
+// - JetBrains Mono: small uppercase labels, HUD values
+// Instrument Serif is preloaded: the hero name is set in it.
 
-// Variable: wdth 125 for display, 100 for body; wght 400 to 800.
-export const archivo = localFont({
-  src: "../fonts/archivo-latin-var.woff2",
-  weight: "400 800",
-  style: "normal",
-  display: "swap",
-  preload: true,
-  adjustFontFallback: "Arial",
-  declarations: [{ prop: "font-stretch", value: "100% 125%" }],
-  variable: "--font-archivo",
-});
-
-// Accent: one italic word per heading at most. Below the fold, so not preloaded.
 export const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
-  style: "italic",
+  style: ["normal", "italic"],
   display: "swap",
-  preload: false,
+  preload: true,
   adjustFontFallback: true,
   variable: "--font-instrument-serif",
 });
 
-// Labels, data and the HUD, weights 400 and 500.
-// Fallback is a system monospace, not an adjusted Arial: monospace glyphs are ~0.6em wide
-// like JetBrains Mono, so HUD lines wrap the same before and after the swap
-// (the Arial fallback caused a 0.08 layout shift on throttled mobile).
+export const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+  variable: "--font-dm-sans",
+});
+
+export const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: true,
+  variable: "--font-anton",
+});
+
+// Labels, data and the HUD, weights 400 and 500 (self-hosted, trimmed: see src/fonts/README.md).
 export const jetbrainsMono = localFont({
   src: "../fonts/jetbrains-mono-latin-var.woff2",
   weight: "400 500",
@@ -43,8 +48,4 @@ export const jetbrainsMono = localFont({
   variable: "--font-jetbrains-mono",
 });
 
-export const fontVariables = [
-  archivo.variable,
-  instrumentSerif.variable,
-  jetbrainsMono.variable,
-].join(" ");
+export const fontVariables = [instrumentSerif.variable, dmSans.variable, anton.variable, jetbrainsMono.variable].join(" ");
