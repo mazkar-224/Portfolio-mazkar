@@ -63,21 +63,20 @@ export const site = {
   locale: "en",
 } as const;
 
+/** The live address (Vercel, chosen 19 Nov 2026). Change it here if a custom domain is added. */
+export const productionUrl = "https://mazkar.vercel.app";
+
 /**
- * The site's absolute address, for canonical URLs, the sitemap, Open Graph and JSON-LD.
- * TODO: the production domain is not decided yet. Until it is, the address comes from:
- *   1. SITE_URL, if set (set it in Vercel when a custom domain is added), else
- *   2. VERCEL_PROJECT_PRODUCTION_URL, which Vercel provides automatically on every
- *      deploy (the project's *.vercel.app or custom production domain), else
- *   3. http://localhost:3000 for local builds only.
- * No guessed domain is ever written into the site.
+ * The site's absolute address, for canonical URLs, the sitemap, Open Graph and JSON-LD:
+ *   1. SITE_URL, if set (an override for previews or a future custom domain), else
+ *   2. productionUrl above.
+ * Vercel's own VERCEL_PROJECT_PRODUCTION_URL is not used: it kept the project's first name
+ * (mazkarvercelapp.vercel.app, a dead address) after the domain was renamed.
  */
 export function siteUrl(): string {
   const explicit = process.env.SITE_URL?.trim();
   if (explicit) return explicit.replace(/\/+$/, "");
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (vercel) return `https://${vercel.replace(/\/+$/, "")}`;
-  return "http://localhost:3000";
+  return productionUrl;
 }
 
 /** In-page anchors, shared by the nav and the section components. */

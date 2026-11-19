@@ -164,7 +164,7 @@ Set either to `false`, save, and rebuild:
 
 ## Search, social and AI discovery
 
-- **The site address comes from one place,** `siteUrl()` in `src/content/site.ts`. On Vercel it uses the production address automatically. For a custom domain, set the `SITE_URL` environment variable (for example `https://example.com`).
+- **The site address comes from one place,** `productionUrl` in `src/content/site.ts` (now `https://mazkar.vercel.app`). For a custom domain, change it there, or set the `SITE_URL` environment variable (for example `https://example.com`).
 - **Share image:** `src/app/opengraph-image.tsx` draws it at build time from the content files.
 - **Favicon:** `src/app/icon.svg`, `favicon.ico` and `apple-icon.png`.
 - **`robots.txt`:** lets everyone crawl, and names the major AI crawlers. Their names were checked on 18 Nov 2026 against each company's documentation. Recheck them once a year in `src/app/robots.ts`.
@@ -192,7 +192,7 @@ Set either to `false`, save, and rebuild:
    - `/robots.txt` and `/sitemap.xml` show your Vercel address
    - pasting the link into LinkedIn or WhatsApp shows the share card
    - the CV downloads
-4. **Optional custom domain:** add it under the project's **Settings, Domains**. Then set `SITE_URL` under **Settings, Environment Variables** and redeploy.
+4. **Optional custom domain:** add it under the project's **Settings, Domains**. Then change `productionUrl` in `src/content/site.ts` (or set `SITE_URL` under **Settings, Environment Variables**) and redeploy.
 
 Every push to the main branch redeploys automatically.
 
