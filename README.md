@@ -2,6 +2,8 @@
 
 The personal site of Muhammad Azkar, DevOps & AI Automation Engineer in Islamabad, Pakistan.
 
+**Live:** https://mazkar.vercel.app
+
 - **Pages:** a one-page home and a `/services` page.
 - **Stack:** Next.js 16 (App Router, TypeScript) with SCSS modules.
 - **Animation:** GSAP, Lenis and Motion, plus one Three.js effect.
