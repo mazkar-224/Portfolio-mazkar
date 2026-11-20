@@ -18,7 +18,7 @@ type Factory = (scope: HTMLElement) => void;
 
 /**
  * One factory per section (data-anim-section="<id>"). Others get the generic reveals.
- * The hero has none here: its intro is driven by the preloader (preloader.ts), and it is
+ * The hero has none here: its intro is pure CSS behind the preloader (Preloader.module.scss), and it is
  * never hidden on scroll.
  */
 const noop: Factory = () => {};

@@ -5,8 +5,8 @@
 // motion off with the site toggle: native scroll only.
 // Native touch scrolling is kept (syncTouch stays false).
 //
-// Lenis and GSAP load after first paint, when the browser is idle, so they stay out of
-// the first-load bundle (LCP, TBT). Until then scrolling and anchors are native.
+// Lenis and GSAP load on the first scroll, tap or key press, or a few seconds after the page
+// has settled, so they stay out of page load (LCP, TBT). Until then scrolling and anchors are native.
 
 import type Lenis from "lenis";
 import { useEffect } from "react";
@@ -92,7 +92,22 @@ export function SmoothScroll() {
       scrollToTarget(target);
     };
 
-    const cancelIdle = whenIdle(() => void start());
+    // Start on the first scroll-like interaction, or once the page has settled (a few seconds
+    // after load, when idle), whichever comes first. Starting at the first idle moment put
+    // GSAP's parse and setup (~50 KB) inside page load: ~100 ms more blocking time on mobile.
+    const FIRST_INTERACTION = ["wheel", "touchstart", "pointerdown", "keydown", "scroll"] as const;
+    const kick = () => {
+      FIRST_INTERACTION.forEach((type) => window.removeEventListener(type, kick));
+      void start();
+    };
+    FIRST_INTERACTION.forEach((type) => window.addEventListener(type, kick, { passive: true }));
+    let cancelSettled = () => {};
+    const settleTimer = window.setTimeout(() => (cancelSettled = whenIdle(kick)), 4000);
+    const cancelIdle = () => {
+      window.clearTimeout(settleTimer);
+      cancelSettled();
+      FIRST_INTERACTION.forEach((type) => window.removeEventListener(type, kick));
+    };
     reduce.addEventListener("change", onPreferenceChange);
     window.addEventListener(MOTION_EVENT, onPreferenceChange);
     document.addEventListener("click", onClick);

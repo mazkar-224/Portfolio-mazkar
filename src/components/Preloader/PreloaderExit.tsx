@@ -1,31 +1,36 @@
 "use client";
 
-// Loads the preloader's GSAP exit (and the hero intro it hands into), only on a visit that
-// shows the preloader. Every other visit loads nothing here. Renders nothing.
-//
-// Two copies exist, and exactly one runs:
-// - in the root layout ("layout"): runs on pages without a hero (/services), overlay exit only
-// - inside the hero ("hero"): runs once the hero itself has hydrated, so the intro's GSAP
-//   styles are never applied to markup React hasn't hydrated yet (that caused a hydration
-//   mismatch when the layout started the intro before the page segment had hydrated)
-// If this arrives too late, the CSS fallback has already ended the preloader and the exit
-// module just tidies up.
+// Tidies up after the first-visit preloader. The overlay's exit and the hero intro are pure
+// CSS (Preloader.module.scss), so no animation library loads during page load (it added
+// ~100-150 ms of blocking time on mobile). Once those CSS animations have finished, this
+// removes the classes that drive them, and the page is left exactly as server-rendered.
+// Renders nothing.
 
 import { useEffect } from "react";
 
-export function PreloaderExit({ owner }: { owner: "layout" | "hero" }) {
+/** Never wait longer than this (ms after navigation start), e.g. in a hidden tab. */
+const CAP_MS = 4000;
+
+const isIntroAnimation = (a: Animation) => /preloader-|intro-/.test((a as CSSAnimation).animationName ?? "");
+
+export function PreloaderExit() {
   useEffect(() => {
-    if (!document.documentElement.classList.contains("preload")) return;
-    // The layout copy steps aside when the page has a hero: the hero's copy runs instead.
-    if (owner === "layout" && document.querySelector("[data-anim-section='hero']")) return;
-    let cancelled = false;
-    void import("@/animations/preloader").then(({ runPreloaderExit }) => {
-      if (!cancelled) runPreloaderExit();
-    });
-    return () => {
-      cancelled = true;
+    const html = document.documentElement;
+    if (!html.classList.contains("preload")) return;
+
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      html.classList.remove("preload");
+      html.removeAttribute("data-intro");
     };
-  }, [owner]);
+
+    const running = document.getAnimations().filter(isIntroAnimation);
+    void Promise.all(running.map((a) => a.finished.catch(() => {}))).then(finish);
+    const timer = window.setTimeout(finish, Math.max(0, CAP_MS - performance.now()));
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return null;
 }

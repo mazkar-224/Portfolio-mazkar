@@ -2,6 +2,9 @@
 @use "mixins" as *;
 @use "typography" as *;
 
+// GSAP's "expo.out", which the intro used before it moved to CSS.
+$intro-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
 // Hidden unless the boot script chose this visit (html.preload). Without JavaScript, under
 // reduced motion and on repeat visits in the same session, it never shows.
 .preloader {
@@ -16,19 +19,66 @@
   place-items: center;
   background: var(--void);
 
-  // CSS-only exit from 0.9s (gone by 1.2s): the fallback when the animation code is late or fails.
-  // PreloaderExit adds .preload-js to <html> to cancel this and run the GSAP exit instead.
-  animation: preloader-fallback-out 0.3s var(--ease) 0.9s both;
+  // The exit, CSS only (no JavaScript library on first load): once the hairline has filled,
+  // the overlay's clip-path lifts off the page from the top down, so the hero is uncovered
+  // first. Gone 1.3s after first paint, even if JavaScript fails.
+  animation: preloader-lift 0.5s $intro-ease 0.8s both;
 }
 
-:global(html.preload.preload-js) .preloader {
-  animation: none;
-}
-
-@keyframes preloader-fallback-out {
+@keyframes preloader-lift {
+  from {
+    clip-path: inset(0% 0% 0% 0%);
+  }
   to {
-    opacity: 0;
+    clip-path: inset(100% 0% 0% 0%);
     visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+// The hero intro, played as the overlay lifts (first visit per session only: the boot script
+// sets data-intro="covered"). Beats: the label line fades in, the name rises from a mask,
+// then the copy, the actions and the bottom line fade up. Only transform, opacity and
+// clip-path. PreloaderExit removes the classes once it has all finished.
+:global(html.preload[data-intro="covered"]) {
+  :global([data-hero="label"]) {
+    animation: intro-fade 0.6s $intro-ease 0.9s both;
+  }
+  :global([data-hero="name"]) {
+    animation: intro-rise 1.2s $intro-ease 1s both;
+  }
+  :global([data-hero="copy"]) {
+    animation: intro-up 0.6s $intro-ease 1.45s both;
+  }
+  :global([data-hero="actions"]) {
+    animation: intro-up 0.6s $intro-ease 1.6s both;
+  }
+  :global([data-hero="hud"]) {
+    animation: intro-up 0.6s $intro-ease 1.75s both;
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-rise {
+  from {
+    transform: translateY(100%);
+    clip-path: inset(0% 0% 100% 0%);
+  }
+  to {
+    transform: none;
+    clip-path: inset(0% 0% 0% 0%);
+  }
+}
+
+@keyframes intro-up {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
   }
 }
 
@@ -42,11 +92,20 @@
 .label {
   @include mono-label;
   color: var(--bone);
-  animation: preloader-label-in 0.2s linear both;
+  animation:
+    preloader-label-in 0.2s linear both,
+    preloader-label-out 0.3s $intro-ease 0.8s forwards;
 }
 
 @keyframes preloader-label-in {
   from {
+    opacity: 0;
+  }
+}
+
+@keyframes preloader-label-out {
+  to {
+    transform: translateY(-8px);
     opacity: 0;
   }
 }

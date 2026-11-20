@@ -9,8 +9,8 @@ import styles from "./Preloader.module.scss";
  * - Shown only when the boot script in app/layout.tsx put "preload" on <html>: first visit
  *   per session, motion allowed, JavaScript running. Otherwise it is display: none.
  * - One mono line and a 1px --signal hairline filling left to right. No logo, no name.
- * - CSS alone ends it at 1.2s (fallback for slow or failed JavaScript). When the animation
- *   code is ready in time, PreloaderExit takes over and hands straight into the hero intro.
+ * - CSS alone runs the exit and the hero intro behind it (no animation library on first load),
+ *   so it ends on time even if JavaScript is slow or fails. PreloaderExit only tidies up.
  * - aria-hidden: decorative; screen readers read the page underneath from the start.
  */
 export function Preloader() {
@@ -24,7 +24,7 @@ export function Preloader() {
           <span className={styles.line} data-preloader-line />
         </span>
       </div>
-      <PreloaderExit owner="layout" />
+      <PreloaderExit />
     </div>
   );
 }

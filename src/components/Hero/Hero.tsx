@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { PreloaderExit } from "@/components/Preloader/PreloaderExit";
 import { Scene3D } from "@/components/Scene3D/Scene3D";
-import { features, heroCopy } from "@/content";
+import { heroCopy } from "@/content";
 import styles from "./Hero.module.scss";
 
 // The hero (redesign 2, after the reference site): pitch black with faint vertical lines, his
@@ -78,7 +77,6 @@ export function Hero() {
         <p className={styles.bottomItem}>{heroCopy.bottom[1]}</p>
       </div>
 
-      {features.preloader && <PreloaderExit owner="hero" />}
     </section>
   );
 }

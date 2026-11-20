@@ -3,7 +3,8 @@
 // Decides when a 3D scene may load, so WebGL never costs page load:
 // - never under reduced motion (or the site's motion toggle off), without WebGL, or with Save-Data
 // - every device: only after the visitor's first interaction (mouse move, scroll, touch, key),
-//   then after the load event, when the browser is idle (no WebGL work during page load)
+//   then after the load event plus a few quiet seconds, when the browser is idle (no WebGL
+//   work during page load, even if the mouse moves while the page is still loading)
 // - and only while the scene's box is within one screen of the viewport; it unmounts again
 //   when it's far away, so at most two or three WebGL contexts are ever alive
 
@@ -26,6 +27,12 @@ export function canRun3D() {
 let ready = false;
 const waiters = new Set<() => void>();
 
+/** When the load event finished (ms since navigation start), or undefined if it hasn't yet. */
+function loadEnd() {
+  const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+  return nav && nav.loadEventEnd > 0 ? nav.loadEventEnd : undefined;
+}
+
 /** Resolves once 3D may start at all (see the rules above). Shared by every scene. */
 function onReady(cb: () => void) {
   if (ready) return cb();
@@ -43,8 +50,15 @@ if (typeof window !== "undefined") {
   // the effects appear almost at once), then for page load and an idle moment. Starting at
   // idle without that wait put Three.js parsing, shader compiles and the chrome reflection
   // maps inside page load (measured: TBT 1.0-10 s on mobile, 3.8 s on desktop).
+  // After load it also waits a few quiet seconds: a visitor who moves the mouse while the page
+  // is still loading otherwise pulled Three.js (~250 KB) and the shader compiles into page load
+  // (measured 20 Nov: mobile TBT 3.0 s and Performance 67 with the mouse moving, vs ~0.3 s).
+  const SETTLE_MS = 3500;
   const events = ["pointermove", "scroll", "wheel", "touchstart", "pointerdown", "keydown"] as const;
-  const afterLoad = () => whenIdle(release);
+  const afterLoad = () => {
+    const sinceLoad = performance.now() - (loadEnd() ?? performance.now());
+    window.setTimeout(() => whenIdle(release), Math.max(0, SETTLE_MS - sinceLoad));
+  };
   const first = () => {
     events.forEach((type) => window.removeEventListener(type, first));
     if (document.readyState === "complete") afterLoad();
