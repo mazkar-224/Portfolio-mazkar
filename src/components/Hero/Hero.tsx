@@ -13,7 +13,7 @@ export function Hero() {
     <section className={styles.hero} aria-labelledby="hero-title" data-anim-section="hero">
       <div className={styles.lines} aria-hidden="true" />
 
-      <Scene3D kind="portrait" src="/images/me/azkar-headshot-bw.png" className={styles.portrait}>
+      <Scene3D kind="portrait" src="/images/me/azkar-headshot-bw.webp" className={styles.portrait}>
         <Image
           src="/images/me/azkar-headshot-bw.png"
           alt={heroCopy.portraitAlt}

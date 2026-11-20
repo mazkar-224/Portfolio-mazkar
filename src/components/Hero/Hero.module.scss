@@ -59,7 +59,7 @@
   inset: 0;
   background-image: radial-gradient(circle, transparent 0 0.8px, rgb(0 0 0 / 0.55) 1.2px);
   background-size: 2.6px 2.6px;
-  mask-image: url("/images/me/azkar-headshot-bw.png");
+  mask-image: url("/images/me/azkar-headshot-bw.webp"); // small WebP copy: the mask only needs the shape
   mask-size: 100% 100%;
   pointer-events: none;
 }
